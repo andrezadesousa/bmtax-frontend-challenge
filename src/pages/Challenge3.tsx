@@ -2,164 +2,42 @@ import {
   Bug,
   AlertTriangle,
   CheckCircle2,
-  FileCode,
   Terminal,
   Lightbulb,
   ArrowRight,
 } from "lucide-react";
-
-const stackTrace = `TypeError: Cannot read properties of null (reading 'map')
-  at ProductDisplay (http://localhost:3000/static/js/main.chunk.js:XXX:YY)
-  at renderWithHooks (http://localhost:3000/static/js/vendors~main.chunk.js:AAA:BB)
-  at mountComponent (http://localhost:3000/static/js/vendors~main.chunk.js:BBB:CC)
-  ... outras linhas omitidas`;
-
-const buggyCode = `function ProductDisplay({ products }) {
-  return (
-    <div>
-      {products.map(product => (
-        <ProductCard key={product.id} product={product} />
-      ))}
-    </div>
-  );
-}`;
-
-const fixedCode = `function ProductDisplay({ products }) {
-  // Verifica se products existe antes de iterar
-  if (!products || products.length === 0) {
-    return <p>Nenhum produto encontrado.</p>;
-  }
-
-  return (
-    <div>
-      {products.map(product => (
-        <ProductCard key={product.id} product={product} />
-      ))}
-    </div>
-  );
-}`;
-
-const alternativeCode = `function ProductDisplay({ products }) {
-  return (
-    <div>
-      {/* Optional chaining evita erro se products for null */}
-      {products?.map(product => (
-        <ProductCard key={product.id} product={product} />
-      ))}
-    </div>
-  );
-}`;
-
-type CodeBlockProps = {
-  code: string;
-  filename: string;
-  variant?: "error" | "success" | "neutral";
-};
-
-function CodeBlock({ code, filename, variant = "neutral" }: CodeBlockProps) {
-  const lines = code.split("\n");
-
-  const headerColors = {
-    error: "bg-diff-remove-bg border-diff-remove-border",
-    success: "bg-diff-add-bg border-diff-add-border",
-    neutral: "bg-code-header border-code-border",
-  };
-
-  const labelColors = {
-    error: "text-diff-remove-line",
-    success: "text-diff-add-line",
-    neutral: "text-code-text",
-  };
-
-  return (
-    <div className="border border-code-border rounded-lg overflow-hidden">
-      <div
-        className={`flex items-center gap-2 px-4 py-2 border-b ${headerColors[variant]}`}
-      >
-        <FileCode size={14} className={labelColors[variant]} />
-        <span className={`text-xs font-mono ${labelColors[variant]}`}>
-          {filename}
-        </span>
-      </div>
-
-      <div className="bg-code-bg overflow-x-auto">
-        <table className="w-full text-xs font-mono">
-          <tbody>
-            {lines.map((line, idx) => (
-              <tr key={idx}>
-                <td className="w-8 px-2 py-0.5 text-right text-code-lineNumber select-none border-r border-code-border">
-                  {idx + 1}
-                </td>
-                <td className="px-3 py-0.5 whitespace-pre text-code-text">
-                  {line || " "}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </div>
-  );
-}
-
-type InfoCardProps = {
-  icon: React.ReactNode;
-  title: string;
-  children: React.ReactNode;
-  variant?: "error" | "success" | "warning" | "info";
-};
-
-function InfoCard({ icon, title, children, variant = "info" }: InfoCardProps) {
-  const colors = {
-    error: "border-l-diff-remove-border bg-diff-remove-bg/10",
-    success: "border-l-diff-add-border bg-diff-add-bg/10",
-    warning: "border-l-yellow-500 bg-yellow-50",
-    info: "border-l-primary-light bg-surface-light",
-  };
-
-  return (
-    <div className={`border-l-4 ${colors[variant]} p-4 md:p-5 rounded-r-lg`}>
-      <div className="flex items-center gap-2 mb-2">
-        {icon}
-        <h3 className="text-sm font-semibold text-text-dark">{title}</h3>
-      </div>
-      <div className="text-sm text-primary-medium leading-relaxed">
-        {children}
-      </div>
-    </div>
-  );
-}
+import { InfoCard } from "../components/InfoCard/InfoCard";
+import { StaticCodeBlock } from "../components/CodeBlock/StaticCodeBlock";
+import { PageHeader } from "../components/PageHeader/PageHeader";
+import {
+  stackTrace,
+  buggyCode,
+  fixedCode,
+  alternativeCode,
+} from "../data/challenge3Data";
 
 export function Challenge3() {
   return (
     <div className="p-4 md:p-8 bg-surface-white min-h-full">
-      {/* Header */}
-      <header className="mb-6 md:mb-8">
-        <div className="flex flex-wrap items-center gap-3 mb-3">
-          <div className="flex items-center gap-2 px-3 py-1.5 bg-diff-remove-bg rounded-full">
-            <Bug size={16} className="text-diff-remove-line" />
-            <span className="text-xs font-medium text-diff-remove-line">
-              Bug Report #127
-            </span>
-          </div>
-          <div className="flex items-center gap-2 px-3 py-1.5 bg-surface-light rounded-full">
-            <span className="text-xxs font-mono text-primary-medium">
-              ProductDisplay.jsx
-            </span>
-          </div>
-        </div>
-
-        <h1 className="text-xl md:text-2xl font-bold text-text-dark mb-2">
-          Desafio 3 — Analise de Erro em Producao
-        </h1>
-
-        <p className="text-sm text-primary-medium max-w-3xl leading-relaxed">
-          O time de QA reportou uma falha na pagina de listagem de produtos. Um
-          card com a stack trace foi atribuido a mim para analise. Abaixo esta a
-          investigacao completa do erro, identificacao da causa raiz e a
-          correcao proposta.
-        </p>
-      </header>
+      <PageHeader
+        title="Desafio 3 — Analise de Erro em Producao"
+        description="Nossos analistas de qualidade reportaram uma falha na página de listagem de produtos. Um card reportando o bug foi atribuído à você com a *Stack Trace* a seguir."
+        badges={
+          <>
+            <div className="flex items-center gap-2 px-3 py-1.5 bg-diff-remove-bg rounded-full">
+              <Bug size={16} className="text-diff-remove-line" />
+              <span className="text-xs font-medium text-diff-remove-line">
+                Bug Report #2
+              </span>
+            </div>
+            <div className="flex items-center gap-2 px-3 py-1.5 bg-surface-light rounded-full">
+              <span className="text-xxs font-mono text-primary-medium">
+                ProductDisplay.jsx
+              </span>
+            </div>
+          </>
+        }
+      />
 
       <div className="space-y-6">
         {/* Stack Trace */}
@@ -187,7 +65,7 @@ export function Challenge3() {
         <section className="bg-primary-dark text-text-white p-4 md:p-6 rounded-lg">
           <div className="flex items-center gap-2 mb-4">
             <Bug size={20} className="text-primary-light" />
-            <h2 className="font-semibold">Identificacao da Causa</h2>
+            <h2 className="font-semibold">Identificação da causa</h2>
           </div>
 
           <div className="space-y-3 text-sm leading-relaxed">
@@ -196,7 +74,7 @@ export function Challenge3() {
               <code className="bg-primary-medium px-1.5 py-0.5 rounded text-xs">
                 Cannot read properties of null (reading 'map')
               </code>{" "}
-              ocorre quando tentamos executar o metodo{" "}
+              acontece quando tentamos executar o metodo{" "}
               <code className="text-primary-light">.map()</code> em uma variavel
               com valor <strong>null</strong> ou <strong>undefined</strong>.
             </p>
@@ -210,10 +88,10 @@ export function Challenge3() {
             </p>
 
             <p className="text-surface-light">
-              Isso sugere que a prop{" "}
+              Ou seja, isso sugere que a prop{" "}
               <code className="text-primary-light">products</code> esta chegando
-              como <strong>null</strong> no primeiro render, provavelmente
-              porque os dados ainda estao sendo carregados de uma API.
+              como <strong>null</strong> no primeiro render, talvez porque os
+              dados ainda estão sendo carregados de uma API.
             </p>
           </div>
         </section>
@@ -221,20 +99,20 @@ export function Challenge3() {
         {/* Explicacao do Problema */}
         <InfoCard
           icon={<AlertTriangle size={18} className="text-yellow-600" />}
-          title="Por que o erro acontece?"
+          title="Andreza, por que o erro acontece?"
           variant="warning"
         >
           <p>
-            Quando o React tenta renderizar o componente,{" "}
+            Acontece porque quando o React tenta renderizar o componente,{" "}
             <code className="bg-surface-white px-1 py-0.5 rounded text-xs text-text-dark">
               products.map()
             </code>{" "}
-            e executado imediatamente. Se{" "}
+            é executado imediatamente. Se{" "}
             <code className="bg-surface-white px-1 py-0.5 rounded text-xs text-text-dark">
               products
             </code>{" "}
-            for <strong>null</strong>, o JavaScript lanca um{" "}
-            <strong>TypeError</strong> porque <code>.map()</code> so existe em
+            for <strong>null</strong>, o JavaScript lança um{" "}
+            <strong>TypeError</strong> porque <code>.map()</code> só existe em
             arrays.
           </p>
         </InfoCard>
@@ -243,7 +121,7 @@ export function Challenge3() {
         <section>
           <div className="flex items-center gap-2 mb-3">
             <span className="text-sm font-semibold text-text-dark">
-              Codigo com Problema
+              Código com problema
             </span>
             <ArrowRight size={14} className="text-primary-medium" />
             <span className="text-xs text-diff-remove-line font-medium">
@@ -251,7 +129,7 @@ export function Challenge3() {
             </span>
           </div>
 
-          <CodeBlock
+          <StaticCodeBlock
             code={buggyCode}
             filename="ProductDisplay.jsx"
             variant="error"
@@ -263,51 +141,54 @@ export function Challenge3() {
           <div className="flex items-center gap-2 mb-4">
             <Lightbulb size={18} className="text-diff-add-line" />
             <h2 className="text-sm font-semibold text-text-dark">
-              Solucoes Propostas
+              Minhas soluçõess propostas
             </h2>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-            {/* Solucao 1 */}
+            {/* Solução 1 */}
             <div className="space-y-3">
               <InfoCard
                 icon={<CheckCircle2 size={16} className="text-diff-add-line" />}
-                title="Solucao 1: Verificacao Explicita"
+                title="Solução 1: Verificação explicita"
                 variant="success"
               >
                 <p>
-                  Adicionar uma verificacao antes do <code>.map()</code> para
-                  garantir que a variavel existe e possui elementos. Essa
-                  abordagem permite exibir um fallback quando nao ha dados.
+                  Adicionar uma verificação antes do <code>.map()</code> assim,
+                  podemos garantir que a variável existe e possui elementos.
+                  Essa abordagem permite exibir um fallback quando não tem
+                  dados.
                 </p>
               </InfoCard>
 
-              <CodeBlock
+              <StaticCodeBlock
                 code={fixedCode}
                 filename="ProductDisplay.tsx"
                 variant="success"
               />
             </div>
 
-            {/* Solucao 2 */}
+            {/* Solução 2 */}
             <div className="space-y-3">
               <InfoCard
                 icon={<CheckCircle2 size={16} className="text-diff-add-line" />}
-                title="Solucao 2: Optional Chaining"
+                title="Solução 2: Optional Chaining"
                 variant="success"
               >
-                <p>
+                <p className="leading-relaxed">
                   Usar o operador{" "}
-                  <code className="bg-surface-white px-1 py-0.5 rounded text-xs text-text-dark">
+                  <code className="bg-surface-white px-1 py-0.5 rounded text-xs font-mono text-text-dark border border-gray-100">
                     ?.
                   </code>{" "}
-                  (optional chaining) para evitar o erro de forma concisa.
-                  Simples e eficaz para casos onde nao precisa de fallback
-                  visual.
+                  (Optional Chaining) para evitar o erro de forma concisa. É uma
+                  abordagem simples e eficaz para casos onde não é necessário um
+                  fallback visual imediato, garantindo que o código não "quebre"
+                  se os dados forem nulos, uso bastante comum em renderizações
+                  condicionais.
                 </p>
               </InfoCard>
 
-              <CodeBlock
+              <StaticCodeBlock
                 code={alternativeCode}
                 filename="ProductDisplay.tsx"
                 variant="success"
@@ -355,7 +236,7 @@ export function Challenge3() {
                 className="text-diff-add-line shrink-0 mt-0.5"
               />
               <div>
-                <p className="font-medium text-text-dark">Correcao</p>
+                <p className="font-medium text-text-dark">Correção</p>
                 <p className="text-primary-medium">
                   Validar array antes de iterar
                 </p>
