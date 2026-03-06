@@ -18,7 +18,7 @@ class UserManagement extends React.Component {
   }
 
   handleNameChange(event) {
-    // [PROBLEMA] Mutação direta do estado - quebra reatividade do React
+    // [PROBLEMA] Cuidado com a mutação direta - isso quebra reatividade do react
     this.state.newUserName = event.target.value;
   }
 
@@ -28,7 +28,7 @@ class UserManagement extends React.Component {
 
   addUser() {
     const newUser = {
-      // [PROBLEMA] ID incremental - causa duplicação ao deletar itens
+      // [PROBLEMA] Cuidado ao usar ID incremental - isso causa duplicação ao deletar itens
       id: this.state.users.length + 1,
       name: this.state.newUserName,
       email: this.state.newUserEmail
@@ -36,7 +36,7 @@ class UserManagement extends React.Component {
 
     // [PROBLEMA] Mutação direta com .push() - não dispara re-render
     this.state.users.push(newUser);
-    // [PROBLEMA] forceUpdate() - força render, ignora ciclo de vida
+    // [PROBLEMA] forceUpdate() - força render, ignora ciclo de vida do componente
     this.forceUpdate();
   }
 
@@ -63,7 +63,7 @@ class UserManagement extends React.Component {
         </div>
         <ul>
           {this.state.users.map(user => (
-            {/* [PROBLEMA] Falta key - React não consegue rastrear itens */}
+            {/* [PROBLEMA] Falta key - react não consegue rastrear itens */}
             <li>
               {user.name} ({user.email})
             </li>
