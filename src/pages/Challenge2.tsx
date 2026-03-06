@@ -62,7 +62,7 @@ export function Challenge2() {
                 <AlertCircle size={18} className="text-orange-400 shrink-0" />
                 <p>
                   <strong className="text-orange-400">
-                    Usando o forceUpdate():
+                    Uso de forceUpdate():
                   </strong>{" "}
                   Eu vi que você usou o{" "}
                   <code className="text-primary-light">forceUpdate()</code>, mas
@@ -127,27 +127,53 @@ export function Challenge2() {
                 </p>
               </div>
 
-              {/* Sugestão */}
+              {/* Problema 6 */}
               <div className="flex gap-3">
                 <CheckCircle2 size={18} className="text-green-400 shrink-0" />
                 <p>
                   <strong className="text-green-400">
-                    Que tal darmos um upgrade?
+                    Sugestão de melhoria: modernizar o componente
                   </strong>{" "}
-                  Eu sugiro refatorar esse componente para **Functional
-                  Component**. Usando o hook{" "}
-                  <code className="text-primary-light">useState</code>, a gente
-                  consegue matar esse{" "}
-                  <code className="text-primary-light">constructor</code>e o{" "}
-                  <code className="text-primary-light">this</code>, que sempre
-                  dão confusão. O código vai ficar bem mais limpo, moderno e
-                  muito mais fácil de ler e testar!
+                  É interessante refatorar o componente para um Functional
+                  Component utilizando Hooks como <code>useState</code>. Além de
+                  estar mais alinhado com o que o React recomenda hoje, o código
+                  fica bem mais enxuto: Ai não precisa do{" "}
+                  <code className="text-primary-light">constructor</code> e
+                  aquele monte de{" "}
+                  <code className="text-primary-light">this.state</code>{" "}
+                  espalhado
+                </p>
+              </div>
+
+              {/* COMENTÁRIOS DE TIME GRANDE */}
+
+              <div className="flex gap-3">
+                <CheckCircle2 size={18} className="text-green-400 shrink-0" />
+                <p>
+                  <strong className="text-green-400">
+                    Validação de dados:
+                  </strong>{" "}
+                  Antes de inserir um novo usuário, seria interessante validar
+                  se nome e email estão preenchidos, pois notei que dá para
+                  salvar usuários com os campos vazios. Isso evita inserir
+                  registros inconsistentes e melhora a experiência do usuário
+                </p>
+              </div>
+
+              <div className="flex gap-3">
+                <CheckCircle2 size={18} className="text-green-400 shrink-0" />
+                <p>
+                  <strong className="text-green-400">Escalabilidade:</strong>{" "}
+                  Caso a lista de usuários cresça, pode ser legal extrair o item
+                  da lista para um componente separado, isso facilita a
+                  reutilização e testes
                 </p>
               </div>
             </div>
           </div>
 
-          {/* MELHORIA */}
+          {/* IMPLEMENTAÇÃO CORRIGIDA */}
+
           <div className="border border-primary-light/20 p-6 rounded-lg bg-surface-light">
             <h3 className="font-bold text-primary-dark mb-3 flex items-center gap-2">
               <Code2 size={18} />
@@ -158,95 +184,158 @@ export function Challenge2() {
               {`import { useState } from "react";
 
 export function UserManagement() {
-  const [users, setUsers] = useState([
-    { id: 1, name: "Alice", email: "alice@example.com" },
-    { id: 2, name: "Bob", email: "bob@example.com" }
-  ]);
 
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
+const [users, setUsers] = useState([
+{ id: 1, name: "Alice", email: "alice@example.com" },
+{ id: 2, name: "Bob", email: "bob@example.com" }
+]);
 
-  const addUser = () => {
-    const newUser = {
-      id: Date.now(),
-      name,
-      email
-    };
+const [name, setName] = useState("");
+const [email, setEmail] = useState("");
 
-    setUsers((prev) => [...prev, newUser]);
+const addUser = () => {
 
-    setName("");
-    setEmail("");
-  };
+if (!name || !email) return;
 
-  return (
-    <div>
-      <input
-        type="text"
-        placeholder="Nome do usuário"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-      />
+const newUser = {
+id: crypto.randomUUID(),
+name,
+email
+};
 
-      <input
-        type="email"
-        placeholder="Email do usuário"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
+setUsers(prev => [...prev, newUser]);
 
-      <button onClick={addUser}>
-        Adicionar Usuário
-      </button>
+setName("");
+setEmail("");
 
-      <ul>
-        {users.map((user) => (
-          <li key={user.id}>
-            {user.name} ({user.email})
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
+};
+
+return (
+<div>
+
+<input
+type="text"
+placeholder="Nome do usuário"
+value={name}
+onChange={(e) => setName(e.target.value)}
+/>
+
+<input
+type="email"
+placeholder="Email do usuário"
+value={email}
+onChange={(e) => setEmail(e.target.value)}
+/>
+
+<button onClick={addUser}>
+Adicionar Usuário
+</button>
+
+<ul>
+{users.map(user => (
+<li key={user.id}>
+{user.name} ({user.email})
+</li>
+))}
+</ul>
+
+</div>
+);
 }`}
             </pre>
           </div>
         </section>
 
-        {/* CÓDIGO ORIGINAL */}
+        {/* CÓDIGO ORIGINAL COMPLETO */}
+
         <section className="bg-gray-50 p-6 rounded-lg border border-dashed border-primary-medium/30">
           <h2 className="text-sm font-bold text-primary-medium mb-4 uppercase tracking-widest">
             Código em Revisão
           </h2>
 
-          <div className="relative opacity-80 group hover:opacity-100 transition-opacity">
-            <pre className="text-[11px] leading-tight text-primary-dark overflow-x-auto">
-              {`class UserManagement extends React.Component {
+          <pre className="text-[11px] leading-tight text-primary-dark overflow-x-auto">
+            {`import React from 'react';
+
+class UserManagement extends React.Component {
+
+constructor(props) {
+super(props);
+this.state = {
+users: [
+{ id: 1, name: 'Alice', email: 'alice@example.com' },
+{ id: 2, name: 'Bob', email: 'bob@example.com' }
+],
+newUserName: '',
+newUserEmail: ''
+};
+}
 
 handleNameChange(event) {
-  this.state.newUserName = event.target.value; // mutação direta
+this.state.newUserName = event.target.value;
+}
+
+handleEmailChange(event) {
+this.setState({ newUserEmail: event.target.value });
 }
 
 addUser() {
-  const newUser = { ... };
+const newUser = {
+id: this.state.users.length + 1,
+name: this.state.newUserName,
+email: this.state.newUserEmail
+};
 
-  this.state.users.push(newUser); // mutação
-  this.forceUpdate(); // má prática
+this.state.users.push(newUser);
+this.forceUpdate();
 }
 
 render() {
-  return (
-    <ul>
-      {this.state.users.map(user => (
-        <li>
-          {user.name}
-        </li>
-      ))}
-    </ul>
-  );
-}`}
-            </pre>
-          </div>
+return (
+<div>
+
+<h2>Gerenciamento de Usuários</h2>
+
+<div>
+
+<input
+type="text"
+placeholder="Nome do usuário"
+value={this.state.newUserName}
+/>
+
+<input
+type="email"
+placeholder="Email do usuário"
+value={this.state.newUserEmail}
+onChange={(e) => this.handleEmailChange(e)}
+/>
+
+<button onClick={() => this.addUser()}>
+Adicionar Usuário
+</button>
+
+</div>
+
+<ul>
+
+{this.state.users.map(user => (
+
+<li>
+{user.name} ({user.email})
+</li>
+
+))}
+
+</ul>
+
+</div>
+);
+}
+}
+
+export default UserManagement;
+`}
+          </pre>
         </section>
       </div>
     </div>
