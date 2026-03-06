@@ -5,9 +5,15 @@ type ItemListProps = {
 };
 
 export function ItemList({ items }: ItemListProps) {
+  /**
+   * Eu adicionei esse tratamento de estado vazio para não deixar o usuário no vácuo
+   * Se não encontrar o que está procurando, eu posso garantir que a interface dê um feedback claro
+   */
   if (items.length === 0) {
     return (
-      <p className="text-sm text-gray-500 mt-4">Nenhum item encontrado.</p>
+      <p className="text-sm text-primary-medium mt-4">
+        Nenhum item encontrado.
+      </p>
     );
   }
 
@@ -16,7 +22,7 @@ export function ItemList({ items }: ItemListProps) {
       {items.map((item) => (
         <li
           key={item.id}
-          className="rounded-lg border border-gray-200 p-3 hover:bg-gray-50"
+          className="rounded-lg border border-primary-light/20 bg-surface-light p-3 text-text-dark transition-colors hover:border-primary-light/40 hover:bg-surface-light/80"
         >
           {item.name}
         </li>
