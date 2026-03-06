@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Header } from "./components/Header/Header";
 import { Sidebar } from "./components/Sidebar/Sidebar";
+import { Home } from "./pages/Home";
 import { Challenge1 } from "./pages/Challenge1";
 import { Challenge2 } from "./pages/Challenge2";
 import { Challenge3 } from "./pages/Challenge3";
@@ -14,10 +15,21 @@ const challenges = [
 ];
 
 function App() {
-  const [activeChallenge, setActiveChallenge] = useState(1);
+  const [activeChallenge, setActiveChallenge] = useState(0);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-  const renderChallenge = () => {
+  const handleMenuToggle = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+  };
+
+  const handleCloseSidebar = () => {
+    setIsSidebarOpen(false);
+  };
+
+  const renderContent = () => {
     switch (activeChallenge) {
+      case 0:
+        return <Home onNavigate={setActiveChallenge} />;
       case 1:
         return <Challenge1 />;
       case 2:
@@ -27,22 +39,24 @@ function App() {
       case 4:
         return <Challenge4 />;
       default:
-        return <Challenge1 />;
+        return <Home onNavigate={setActiveChallenge} />;
     }
   };
 
   return (
     <div className="h-screen flex flex-col bg-surface-white">
-      <Header />
+      <Header onMenuToggle={handleMenuToggle} isMenuOpen={isSidebarOpen} />
 
       <div className="flex flex-1 overflow-hidden">
         <Sidebar
           challenges={challenges}
           activeChallenge={activeChallenge}
           onChallengeSelect={setActiveChallenge}
+          isOpen={isSidebarOpen}
+          onClose={handleCloseSidebar}
         />
 
-        <main className="flex-1 overflow-auto">{renderChallenge()}</main>
+        <main className="flex-1 overflow-auto">{renderContent()}</main>
       </div>
     </div>
   );
