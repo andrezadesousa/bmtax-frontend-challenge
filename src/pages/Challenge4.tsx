@@ -52,6 +52,29 @@ export function Challenge4() {
         </p>
       </section>
 
+      <section className="space-y-4">
+        <div className="flex items-center gap-2 mb-4">
+          <Lightbulb size={18} className="text-primary-light" />
+          <h2 className="text-sm font-semibold text-text-dark">
+            Minha proposta para otimizar a performance no caso do consumo de
+            múltiplos endpoints da API para a utilização do formulário de leads
+          </h2>
+        </div>
+
+        <p className="text-sm leading-relaxed">
+          Uma estratégia seria reutilizar o token JWT em memória enquanto ele
+          estiver válido, evitando chamadas repetidas ao endpoint de
+          autenticação. Além disso, é possível realizar chamadas para diferentes
+          endpoints em paralelo utilizando Promise.all, reduzindo o tempo total
+          de carregamento do formulário.
+        </p>
+
+        <p className="text-sm leading-relaxed">
+          Essa abordagem melhora a performance da aplicação e reduz o número de
+          requisições desnecessárias à API.
+        </p>
+      </section>
+
       {/* DOCUMENTAÇÃO DA API */}
       <section className="space-y-6">
         <div className="flex items-center gap-2 mb-4">
