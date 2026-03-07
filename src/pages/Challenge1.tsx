@@ -1,7 +1,7 @@
 import { useState, useMemo } from "react";
 import { items } from "../data/items";
-import { ItemList } from "../components/List/ItemList";
-import { SearchInput } from "../components/Input/SearchInput";
+import { ItemList } from "../components/ItemList/ItemList";
+import { SearchInput } from "../components/SearchInput/SearchInput";
 import { PageHeader } from "../components/PageHeader/PageHeader";
 import { Filter } from "lucide-react";
 

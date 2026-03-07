@@ -1,4 +1,4 @@
-import type { DocumentationLink, TocItem } from "../types/challenge4";
+import type { DocumentationLink, TocItem } from "../types/infoCard";
 
 export const documentationLinks: DocumentationLink[] = [
   {
