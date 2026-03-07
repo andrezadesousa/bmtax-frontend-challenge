@@ -25,18 +25,23 @@ import {
   toc,
 } from "../data/challenge4Data";
 
-export function Challenge4() {
+const GITHUB_URL =
+  "https://github.com/andrezadesousa/bmtax-frontend-challenge/blob/main/src/pages/Challenge4.tsx";
+
+export function Challenge4({ onBack }: { onBack?: () => void }) {
   return (
     <div className="max-w-5xl mx-auto p-4 md:p-6 lg:p-10 text-text-dark space-y-4 md:space-y-6">
       <PageHeader
-        title="Desafio 4 — Implementacao de Autenticação JWT"
+        onBack={onBack}
+        githubUrl={GITHUB_URL}
+        title="Desafio 4 — Implementação de Autenticação JWT"
         description="O desafio é desenvolver um componente Server Side em React que consome endpoints protegidos por token JWT. Aqui eu demonstro minha linha de raciocinio, analise da documentacao e a solução final"
         badges={
           <>
             <div className="flex items-center gap-2 px-2 md:px-3 py-1 md:py-1.5 bg-primary-light/10 rounded-full">
               <Key size={14} className="text-primary-light md:w-4 md:h-4" />
               <span className="text-xxs md:text-xs font-medium text-primary-dark">
-                Autenticacao OAuth JWT
+                Autenticação OAuth JWT
               </span>
             </div>
             <div className="flex items-center gap-2 px-2 md:px-3 py-1 md:py-1.5 bg-surface-light rounded-full">
