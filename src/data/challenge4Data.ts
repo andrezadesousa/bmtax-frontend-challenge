@@ -4,12 +4,12 @@ export const documentationLinks: DocumentationLink[] = [
   {
     title: "Next.js Server Components",
     url: "https://nextjs.org/docs/app/building-your-application/rendering/server-components",
-    description: "Renderizacao server-side no Next.js",
+    description: "Renderização server-side no Next.js",
   },
   {
     title: "MDN - HTTP Authentication",
     url: "https://developer.mozilla.org/en-US/docs/Web/HTTP/Authentication",
-    description: "Padrao Bearer Token",
+    description: "Padrã Bearer Token",
   },
   {
     title: "OAuth 2.0",
@@ -19,7 +19,7 @@ export const documentationLinks: DocumentationLink[] = [
   {
     title: "JWT.io",
     url: "https://jwt.io/introduction",
-    description: "Introducao ao JSON Web Tokens",
+    description: "Introdução ao JSON Web Tokens",
   },
 ];
 
