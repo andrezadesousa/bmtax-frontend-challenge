@@ -28,16 +28,16 @@ describe("Challenge 2 — Code Review", () => {
   });
 
   it("renders the original code block with filename", () => {
-    cy.contains("UserManagement.jsx").should("be.visible");
+    cy.contains("UserManagement.jsx").scrollIntoView().should("be.visible");
   });
 
   it("renders the fixed code block with filename", () => {
-    cy.contains("UserManagement.tsx").should("be.visible");
+    cy.contains("UserManagement.tsx").scrollIntoView().should("be.visible");
   });
 
   it("renders the diff legend", () => {
-    cy.contains("Adições").should("be.visible");
-    cy.contains("Remoções").should("be.visible");
+    cy.contains("Adições").scrollIntoView().should("be.visible");
+    cy.contains("Remoções").scrollIntoView().should("be.visible");
   });
 
   it("has a back button that returns to Home", () => {
