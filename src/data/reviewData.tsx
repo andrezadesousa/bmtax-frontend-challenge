@@ -150,12 +150,11 @@ export const reviewItems: ReviewItem[] = [
     desc: (
       <>
         Notei que você alterou o estado usando o{" "}
-        <code className="text-primary-light">.push()</code> e atribuição direta.
-        Eu vi que o React não "percebe" a mudança se a gente não criar uma cópia
-        nova do estado. Sem o{" "}
-        <code className="text-primary-light">setState</code>, a gente acaba
-        "enganando" o motor de renderização e os componentes podem não atualizar
-        na tela como deveriam.
+        <code className="text-purple-200">.push()</code> e atribuição direta. Eu
+        vi que o React não "percebe" a mudança se a gente não criar uma cópia
+        nova do estado. Sem o <code className="text-purple-200">setState</code>,
+        a gente acaba "enganando" o motor de renderização e os componentes podem
+        não atualizar na tela como deveriam.
       </>
     ),
   },
@@ -165,11 +164,11 @@ export const reviewItems: ReviewItem[] = [
     desc: (
       <>
         Eu vi que você usou o{" "}
-        <code className="text-primary-light">forceUpdate()</code>, mas isso é
-        meio que um "empurrãozinho" no React. A gente acaba forçando o
-        componente atualizar, ignorando o ciclo de vida natural dele (muito
-        importante!). Se a gente ajustar a imutabilidade do estado, o React vai
-        atualizar sozinho sem precisar desse empurrãozinho manual.
+        <code className="text-purple-200">forceUpdate()</code>, mas isso é meio
+        que um "empurrãozinho" no React. A gente acaba forçando o componente
+        atualizar, ignorando o ciclo de vida natural dele (muito importante!).
+        Se a gente ajustar a imutabilidade do estado, o React vai atualizar
+        sozinho sem precisar desse empurrãozinho manual.
       </>
     ),
   },
@@ -179,10 +178,10 @@ export const reviewItems: ReviewItem[] = [
     desc: (
       <>
         (já esqueci disso também hehe), mas ao renderizar listas no React é
-        necessário usar a prop <code className="text-primary-light">key</code>{" "}
-        para cada elemento. Sem ela, o React se perde um pouco na hora de saber
-        qual item foi alterado ou deletado. Eu costumo colocar o{" "}
-        <code className="text-primary-light">user.id</code> como chave para a
+        necessário usar a prop <code className="text-purple-200">key</code> para
+        cada elemento. Sem ela, o React se perde um pouco na hora de saber qual
+        item foi alterado ou deletado. Eu costumo colocar o{" "}
+        <code className="text-purple-200">user.id</code> como chave para a
         performance ficar em dia!
       </>
     ),
@@ -194,8 +193,8 @@ export const reviewItems: ReviewItem[] = [
       <>
         {" "}
         Eu tentei digitar no campo de nome e não consegui! Como você passou o
-        <code className="text-primary-light">value</code> mas esqueceu do
-        <code className="text-primary-light">onChange</code>, o input virou "só
+        <code className="text-purple-200">value</code> mas esqueceu do
+        <code className="text-purple-200">onChange</code>, o input virou "só
         leitura". Precisamos conectar a função de mudança ali pro estado
         conseguir atualizar o que o usuário digita.
       </>
@@ -207,12 +206,11 @@ export const reviewItems: ReviewItem[] = [
     desc: (
       <>
         {" "}
-        Gerar o ID usando o{" "}
-        <code className="text-primary-light">length + 1</code>
+        Gerar o ID usando o <code className="text-purple-200">length + 1</code>
         pode dar dor de cabeça se a gente começar a deletar usuários, porque os
         IDs vão acabar se repetindo. Eu sugiro usar um{" "}
-        <code className="text-primary-light">Date.now()</code>
-        ou até o <code className="text-primary-light">
+        <code className="text-purple-200">Date.now()</code>
+        ou até o <code className="text-purple-200">
           crypto.randomUUID()
         </code>{" "}
         pra garantir que cada usuário tenha um RG único de verdade!
@@ -228,9 +226,8 @@ export const reviewItems: ReviewItem[] = [
         É interessante refatorar o componente para um Functional Component
         utilizando Hooks como <code>useState</code>. Além de estar mais alinhado
         com o que o React recomenda hoje, o código fica bem mais enxuto: Ai não
-        precisa do <code className="text-primary-light">constructor</code> e
-        aquele monte de <code className="text-primary-light">this.state</code>{" "}
-        espalhado
+        precisa do <code className="text-purple-200">constructor</code> e aquele
+        monte de <code className="text-purple-200">this.state</code> espalhado
       </>
     ),
   },
