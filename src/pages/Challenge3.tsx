@@ -21,7 +21,7 @@ export function Challenge3() {
     <div className="p-4 md:p-8 bg-surface-white min-h-full">
       <PageHeader
         title="Desafio 3 — Analise de Erro em Producao"
-        description="Nossos analistas de qualidade reportaram uma falha na página de listagem de produtos. Um card reportando o bug foi atribuído à você com a *Stack Trace* a seguir."
+        description="Nossos analistas de qualidade reportaram uma falha na página de listagem de produtos. Um card reportando o bug foi atribuído a mim com a *Stack Trace* a seguir."
         badges={
           <>
             <div className="flex items-center gap-2 px-3 py-1.5 bg-diff-remove-bg rounded-full">
@@ -200,7 +200,7 @@ export function Challenge3() {
         {/* Resumo */}
         <footer className="bg-surface-light p-4 md:p-5 rounded-lg">
           <h3 className="text-sm font-semibold text-text-dark mb-3">
-            Resumo da Analise
+            Resumo da Análise
           </h3>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
@@ -225,7 +225,7 @@ export function Challenge3() {
               <div>
                 <p className="font-medium text-text-dark">Impacto</p>
                 <p className="text-primary-medium">
-                  Pagina quebra no carregamento inicial
+                  Página quebra no carregamento inicial
                 </p>
               </div>
             </div>
