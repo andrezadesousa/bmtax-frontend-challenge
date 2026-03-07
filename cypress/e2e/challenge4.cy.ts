@@ -11,15 +11,23 @@ describe("Challenge 4 — JWT Authentication", () => {
   });
 
   it("renders all collapsible section titles", () => {
-    cy.contains("1. Entendendo a documentação: Meu pensamento inicial").should(
-      "be.visible",
-    );
-    cy.contains("2. Analisando a documentação da API").should("be.visible");
-    cy.contains("3. Pensando no fluxo da aplicação").should("be.visible");
-    cy.contains("4. Pseudocódigo da solução").should("be.visible");
-    cy.contains("5. Implementação").should("be.visible");
-    cy.contains("6. Preview do componente").should("be.visible");
-    cy.contains("7. Decisões técnicas").should("be.visible");
+    cy.contains("1. Entendendo a documentação: Meu pensamento inicial")
+      .scrollIntoView()
+      .should("be.visible");
+    cy.contains("2. Analisando a documentação da API")
+      .scrollIntoView()
+      .should("be.visible");
+    cy.contains("3. Pensando no fluxo da aplicação")
+      .scrollIntoView()
+      .should("be.visible");
+    cy.contains("4. Pseudocódigo da solução")
+      .scrollIntoView()
+      .should("be.visible");
+    cy.contains("5. Implementação").scrollIntoView().should("be.visible");
+    cy.contains("6. Preview do componente")
+      .scrollIntoView()
+      .should("be.visible");
+    cy.contains("7. Decisões técnicas").scrollIntoView().should("be.visible");
   });
 
   it("collapsible sections are open by default", () => {
@@ -51,12 +59,18 @@ describe("Challenge 4 — JWT Authentication", () => {
   });
 
   it("renders the API endpoint documentation", () => {
-    cy.contains("POST https://api.acme.com/auth").should("be.visible");
+    cy.contains("POST https://api.acme.com/auth")
+      .scrollIntoView()
+      .should("be.visible");
   });
 
   it("renders authService and apiClient code blocks", () => {
-    cy.contains("src/services/authService.ts").should("be.visible");
-    cy.contains("src/services/apiClient.ts").should("be.visible");
+    cy.contains("src/services/authService.ts")
+      .scrollIntoView()
+      .should("be.visible");
+    cy.contains("src/services/apiClient.ts")
+      .scrollIntoView()
+      .should("be.visible");
   });
 
   it("renders the sticky table of contents", () => {
