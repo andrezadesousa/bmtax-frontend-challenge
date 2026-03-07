@@ -33,11 +33,11 @@ describe("Home", () => {
 
   it("navigates to Challenge 1 when its card button is clicked", () => {
     cy.get("main").contains("button", "Desafio 1").click();
-    cy.get("main").contains("h1", "Desafio 1").should("be.visible");
+    cy.contains("h1", "Desafio 1").should("be.visible");
   });
 
   it("navigates to Challenge 2 when its card button is clicked", () => {
     cy.get("main").contains("button", "Desafio 2").click();
-    cy.get("main").contains("h1", "Desafio 2").should("be.visible");
+    cy.contains("h1", "Desafio 2").should("be.visible");
   });
 });
