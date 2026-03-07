@@ -19,6 +19,7 @@ const technologies = [
   { name: "Vite", version: "7.3.1" },
   { name: "Tailwind CSS", version: "3.4.17" },
   { name: "Lucide React", version: "0.577.0" },
+  { name: "Cypress", version: "15.11.0" },
 ];
 
 const challenges = [
@@ -36,7 +37,7 @@ const challenges = [
     title: "Desafio 2",
     subtitle: "Code Review",
     description:
-      "Analise de uma Pull Request identificando problemas de mutação de estado, boas praticas do React e refatoração para Hooks.",
+      "Análise de uma Pull Request identificando problemas de mutação de estado, boas práticas do React e refatoração para Hooks.",
     icon: GitPullRequest,
     color: "bg-diff-add-border",
   },
@@ -45,7 +46,7 @@ const challenges = [
     title: "Desafio 3",
     subtitle: "Debug de Erro",
     description:
-      "Investigação de um TypeError em produção, analise de stack trace e implementação de soluções com optional chaining.",
+      "Investigação de um TypeError em produção, análise de stack trace e implementação de soluções com optional chaining.",
     icon: Bug,
     color: "bg-diff-remove-border",
   },
@@ -54,7 +55,7 @@ const challenges = [
     title: "Desafio 4",
     subtitle: "OAuth JWT",
     description:
-      "Desenvolvimento de um serviço de autenticação com cache de token, renovação automatica e requisições paralelas.",
+      "Desenvolvimento de um serviço de autenticação com cache de token, renovação automática e requisições paralelas.",
     icon: Key,
     color: "bg-yellow-500",
   },
@@ -80,11 +81,11 @@ export function Home({ onNavigate }: HomeProps) {
         </div>
 
         <p className="text-sm md:text-base text-primary-medium max-w-3xl leading-relaxed">
-          Ola! Eu sou a <strong className="text-text-dark">Andreza</strong>,
-          desenvolvedora front-end junior. Este projeto apresenta minhas
+          Olá! Eu sou a <strong className="text-text-dark">Andreza</strong>,
+          desenvolvedora front-end júnior. Este projeto apresenta minhas
           respostas aos 4 desafios propostos no processo seletivo, cada um
-          documentado em sua propria pagina com codigo, explicacoes e minha
-          linha de raciocinio
+          documentado em sua própria página com código, explicações e minha
+          linha de raciocínio.
         </p>
       </header>
 
@@ -170,17 +171,17 @@ export function Home({ onNavigate }: HomeProps) {
             <div>
               <h3 className="font-semibold text-base md:text-lg">Andreza</h3>
               <p className="text-xs md:text-sm text-surface-light">
-                Desenvolvedora Front-end Junior
+                Desenvolvedora Front-end Júnior
               </p>
             </div>
           </div>
 
           <div className="flex-1">
             <p className="text-xs md:text-sm text-surface-light leading-relaxed">
-              Oiê, time BM. Agradeço a oportunidade de demonstrar meus
+              Oiê, time BM! Agradeço a oportunidade de demonstrar meus
               conhecimentos e participar do processo seletivo. Cada desafio foi
               uma oportunidade de aprendizado e gosto muito disso. Documentei
-              meu processo de raciocinio, as pesquisas que fiz e as decisoes que
+              meu processo de raciocínio, as pesquisas que fiz e as decisões que
               tomei, mostrando como abordo problemas reais.
             </p>
           </div>
