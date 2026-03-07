@@ -16,11 +16,16 @@ import {
   alternativeCode,
 } from "../data/challenge3Data";
 
-export function Challenge3() {
+const GITHUB_URL =
+  "https://github.com/andrezadesousa/bmtax-frontend-challenge/blob/main/src/pages/Challenge3.tsx";
+
+export function Challenge3({ onBack }: { onBack?: () => void }) {
   return (
     <div className="p-4 md:p-8 bg-surface-white min-h-full">
       <PageHeader
-        title="Desafio 3 — Analise de Erro em Producao"
+        onBack={onBack}
+        githubUrl={GITHUB_URL}
+        title="Desafio 3 — Analise de Erro em Produção"
         description="Nossos analistas de qualidade reportaram uma falha na página de listagem de produtos. Um card reportando o bug foi atribuído a mim com a *Stack Trace* a seguir."
         badges={
           <>
