@@ -7,6 +7,8 @@ type PullRequestHeaderProps = {
   targetBranch: string;
   title: string;
   description: React.ReactNode;
+  onBack?: () => void;
+  githubUrl?: string;
 };
 
 export function PullRequestHeader({
@@ -15,11 +17,15 @@ export function PullRequestHeader({
   targetBranch,
   title,
   description,
+  onBack,
+  githubUrl,
 }: PullRequestHeaderProps) {
   return (
     <PageHeader
       title={title}
       description={description}
+      onBack={onBack}
+      githubUrl={githubUrl}
       badges={
         <>
           <div className="flex items-center gap-2 px-3 py-1.5 bg-primary-light/10 rounded-full">
