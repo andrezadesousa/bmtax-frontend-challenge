@@ -1,4 +1,4 @@
-import type { TocItem } from "../../types/challenge4";
+import type { TocItem } from "../../types/infoCard";
 
 interface Props {
   items: TocItem[];

@@ -1,4 +1,4 @@
-import type { InfoCardProps } from "../../types/challenge3";
+import type { InfoCardProps } from "../../types/codeBlock";
 
 const variantStyles: Record<NonNullable<InfoCardProps["variant"]>, string> = {
   error: "border-l-diff-remove-border bg-diff-remove-bg/10",

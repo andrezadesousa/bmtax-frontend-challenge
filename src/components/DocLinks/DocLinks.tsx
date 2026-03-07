@@ -1,5 +1,5 @@
 import { ExternalLink } from "lucide-react";
-import type { DocumentationLink } from "../../types/challenge4";
+import type { DocumentationLink } from "../../types/infoCard";
 
 interface Props {
   links: DocumentationLink[];

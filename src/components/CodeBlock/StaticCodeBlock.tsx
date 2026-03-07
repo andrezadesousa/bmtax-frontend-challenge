@@ -1,5 +1,5 @@
 import { FileCode } from "lucide-react";
-import type { StaticCodeBlockProps } from "../../types/challenge3";
+import type { StaticCodeBlockProps } from "../../types/codeBlock";
 
 const headerColors: Record<
   NonNullable<StaticCodeBlockProps["variant"]>,
