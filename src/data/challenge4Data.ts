@@ -1,158 +1,166 @@
-export const apiDocumentation = `POST https://api.acme.com/auth
+import type { DocumentationLink, TocItem } from "../types/challenge4";
 
-Request Body:
-  access_key  - string - Ex.: DFt7Oqzn_LGyYnDGLwX7oA
-  secret_key  - string - Ex.: dNiIFM34DSvKIAubw9nfJL7q...
+export const documentationLinks: DocumentationLink[] = [
+  {
+    title: "Next.js Server Components",
+    url: "https://nextjs.org/docs/app/building-your-application/rendering/server-components",
+    description: "Renderizacao server-side no Next.js",
+  },
+  {
+    title: "MDN - HTTP Authentication",
+    url: "https://developer.mozilla.org/en-US/docs/Web/HTTP/Authentication",
+    description: "Padrao Bearer Token",
+  },
+  {
+    title: "OAuth 2.0",
+    url: "https://oauth.net/2/",
+    description: "Fluxo Client Credentials",
+  },
+  {
+    title: "JWT.io",
+    url: "https://jwt.io/introduction",
+    description: "Introducao ao JSON Web Tokens",
+  },
+];
 
-Response (HTTP 200):
-  access_token            - string  - Token de acesso
-  access_token_expires_in - integer - Tempo de vida em segundos (3600)
-  refresh_token           - string  - Token de atualizacao
-  refresh_token_expires_in - integer - Tempo de vida em segundos`;
+export const toc: TocItem[] = [
+  { id: "sec-pensamento", label: "1. Pensamento inicial" },
+  { id: "sec-otimizacao", label: "Otimização" },
+  { id: "sec-documentacao", label: "2. Documentação" },
+  { id: "sec-fluxo", label: "3. Fluxo" },
+  { id: "sec-pseudocode", label: "4. Pseudocódigo" },
+  { id: "sec-implementacao", label: "5. Implementação" },
+  { id: "sec-preview", label: "6. Preview" },
+  { id: "sec-decisoes", label: "7. Decisões técnicas" },
+  { id: "sec-performance", label: "8. Performance" },
+];
+
+export const pseudoCode = `function authenticate() {
+
+  send POST request to /auth
+
+  body = {
+    access_key,
+    secret_key
+  }
+
+  if response is 200:
+      store access_token
+      return token
+
+  if response is 401:
+      show authentication error
+}
+
+function submitLeadForm(formData) {
+
+  token = authenticate()
+
+  send POST request to /leads
+  body = formData
+  using Authorization: Bearer token
+}`;
 
 export const authServiceCode = `// src/services/authService.ts
 
-// Cache em memoria — persiste entre requisicoes no servidor
+// Cache em memória (válido enquanto o servidor estiver rodando)
 let cachedToken: string | null = null;
 let tokenExpiration: number | null = null;
-let cachedRefreshToken: string | null = null;
-let refreshTokenExpiration: number | null = null;
 
-async function authenticate(): Promise<string> {
+export async function getAuthToken(): Promise<string> {
+  const now = Date.now();
+
+  // reutiliza token se ainda estiver válido
+  if (cachedToken && tokenExpiration && now < tokenExpiration) {
+    return cachedToken;
+  }
+
   const response = await fetch("https://api.acme.com/auth", {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      "Content-Type": "application/json",
+    },
     body: JSON.stringify({
       access_key: process.env.ACME_ACCESS_KEY,
       secret_key: process.env.ACME_SECRET_KEY,
     }),
   });
 
-  if (!response.ok) throw new Error("Falha na autenticacao");
-
-  const data = await response.json();
-  const now = Date.now();
-
-  cachedToken = data.access_token;
-  tokenExpiration = now + (data.access_token_expires_in - 300) * 1000;
-  cachedRefreshToken = data.refresh_token;
-  refreshTokenExpiration = now + data.refresh_token_expires_in * 1000;
-
-  return cachedToken!;
-}
-
-async function refreshAccessToken(): Promise<string> {
-  const response = await fetch("https://api.acme.com/auth/refresh", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ refresh_token: cachedRefreshToken }),
-  });
-
-  // Se o refresh falhar, volta ao fluxo completo de autenticacao
   if (!response.ok) {
-    cachedRefreshToken = null;
-    return authenticate();
+    throw new Error("Falha na autenticação");
   }
 
   const data = await response.json();
-  const now = Date.now();
 
   cachedToken = data.access_token;
-  tokenExpiration = now + (data.access_token_expires_in - 300) * 1000;
 
-  return cachedToken!;
-}
+  // margem de segurança antes da expiração
+  tokenExpiration = now + (data.access_token_expires_in - 60) * 1000;
 
-export async function getAuthToken(): Promise<string> {
-  const now = Date.now();
-
-  // 1. Token ainda valido — reutiliza
-  if (cachedToken && tokenExpiration && now < tokenExpiration) {
-    return cachedToken;
-  }
-
-  // 2. Refresh token valido — renova sem reautenticar
-  if (cachedRefreshToken && refreshTokenExpiration && now < refreshTokenExpiration) {
-    return refreshAccessToken();
-  }
-
-  // 3. Sem tokens validos — autentica do zero
-  return authenticate();
+  return cachedToken;
 }`;
 
-export const apiClientCode = `// src/services/apiClient.ts
-import { getAuthToken } from "./authService";
+export const apiClientCode =
+  "// src/services/apiClient.ts\n\n" +
+  'import { getAuthToken } from "./authService";\n\n' +
+  'export async function apiRequest(endpoint, method = "GET", body) {\n\n' +
+  "  const token = await getAuthToken();\n\n" +
+  "  const response = await fetch(`https://api.acme.com${endpoint}`, {\n" +
+  "    method,\n" +
+  "    headers: {\n" +
+  "      Authorization: `Bearer ${token}`,\n" +
+  '      "Content-Type": "application/json",\n' +
+  "    },\n" +
+  "    body: body ? JSON.stringify(body) : undefined,\n" +
+  "  });\n\n" +
+  "  if (!response.ok) {\n" +
+  "    throw new Error(`Erro na requisição: ${response.status}`);\n" +
+  "  }\n\n" +
+  "  return response.json();\n" +
+  "}";
 
-export async function apiRequest<T>(
-  endpoint: string,
-  method: "GET" | "POST" | "PUT" | "DELETE" = "GET",
-  body?: unknown
-): Promise<T> {
-  const token = await getAuthToken();
+export const leadsFormCode = `// LeadsFormPreview.tsx
 
-  const response = await fetch(\`https://api.acme.com\${endpoint}\`, {
-    method,
-    headers: {
-      "Authorization": \`Bearer \${token}\`,
-      "Content-Type": "application/json",
-    },
-    body: body ? JSON.stringify(body) : undefined,
-  });
-
-  if (!response.ok) {
-    throw new Error(\`Erro na requisicao: \${response.status}\`);
-  }
-
-  return response.json();
-}`;
-
-export const hardcodedCredentialsCode = `// ERRADO — nunca faca isso
-body: JSON.stringify({
-  access_key: "DFt7Oqzn_LGyYnDGLwX7oA",
-  secret_key: "dNiIFM34DSvKIAubw9nfJL7qrFWFoYKLSeHPVOyNcEBw-7oTROVK3mq5mbzR",
-})
-// Qualquer pessoa com acesso ao repositorio ve essas credenciais.
-// Mesmo que voce delete depois, o git guarda o historico para sempre.`;
-
-export const envExampleCode = `# .env  ← este arquivo fica listado no .gitignore por padrao
-# Nunca e commitado — apenas existe na maquina local e no ambiente de deploy
-
-ACME_ACCESS_KEY=DFt7Oqzn_LGyYnDGLwX7oA
-ACME_SECRET_KEY=dNiIFM34DSvKIAubw9nfJL7qrFWFoYKLSeHPVOyNcEBw-7oTROVK3mq5mbzR`;
-
-export const envUsageCode = `// CERTO — le as credenciais do ambiente, nunca do codigo
-body: JSON.stringify({
-  access_key: process.env.ACME_ACCESS_KEY,
-  secret_key: process.env.ACME_SECRET_KEY,
-})
-// No servidor Node.js: lido do arquivo .env via dotenv (ou similar)
-// Em producao: lido das variaveis de ambiente configuradas na plataforma de deploy`;
-
-export const leadsPageFullCode = `// src/pages/LeadsPage.tsx
+import { useState } from "react";
 import { apiRequest } from "../services/apiClient";
-import type { Lead, Product, Region } from "../types/leads";
-import { LeadsForm } from "../components/LeadsForm";
 
-// Componente renderizado no servidor — token nunca vai ao cliente
-export async function LeadsPage() {
-  // Uma unica chamada a getAuthToken() e compartilhada por todas
-  // as requisicoes — o cache garante que nao ha re-autenticacao
-  const [leads, products, regions] = await Promise.all([
-    apiRequest<Lead[]>("/leads"),
-    apiRequest<Product[]>("/products"),
-    apiRequest<Region[]>("/regions"),
-  ]);
+export function LeadsFormPreview() {
+
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [company, setCompany] = useState("");
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+
+    try {
+      await apiRequest("/leads", "POST", {
+        name,
+        email,
+        phone,
+        company,
+      });
+
+      alert("Lead cadastrado com sucesso!");
+
+    } catch (error) {
+      console.error(error);
+      alert("Erro ao cadastrar lead");
+    }
+  }
 
   return (
-    <main className="container mx-auto p-6">
-      <h1 className="text-2xl font-bold mb-6">
-        Cadastro de Oportunidades (Leads)
-      </h1>
-      <LeadsForm
-        leads={leads}
-        products={products}
-        regions={regions}
-      />
-    </main>
+    <form onSubmit={handleSubmit}>
+      <input placeholder="Nome" value={name}
+        onChange={(e) => setName(e.target.value)} />
+      <input placeholder="E-mail" value={email}
+        onChange={(e) => setEmail(e.target.value)} />
+      <input placeholder="Telefone" value={phone}
+        onChange={(e) => setPhone(e.target.value)} />
+      <input placeholder="Empresa" value={company}
+        onChange={(e) => setCompany(e.target.value)} />
+      <button type="submit">Cadastrar lead</button>
+    </form>
   );
 }`;
