@@ -200,16 +200,252 @@ function uploadFile(file) {
         />
       </section>
 
-      {/* IMPLEMENTAÇÃO */}
-      <section className="space-y-4">
+      {/* ===================================================== */}
+      {/* 5. IMPLEMENTAÇÃO */}
+      {/* ===================================================== */}
+
+      <section className="space-y-6">
         <h2 className="text-xl font-semibold">5. Implementação</h2>
 
         <p className="text-sm">
-          Após entender a autenticação da API, o próximo passo foi criar o
-          componente de interface responsável pelo upload de arquivos.
+          Para organizar a integração com a API, separei a lógica em dois
+          serviços:
         </p>
 
+        <ul className="list-disc ml-6 text-sm space-y-1">
+          <li>
+            <strong>authService</strong> — responsável por autenticação e
+            geração do token JWT.
+          </li>
+          <li>
+            <strong>apiClient</strong> — responsável por centralizar chamadas
+            HTTP autenticadas.
+          </li>
+        </ul>
+
+        <p className="text-sm">
+          Essa separação ajuda a manter responsabilidades claras e facilita a
+          reutilização do código.
+        </p>
+
+        {/* authService */}
+
+        <div className="space-y-2">
+          <h3 className="font-semibold text-sm">src/services/authService.ts</h3>
+
+          <pre className="bg-code-bg text-code-text text-xs p-4 rounded-lg overflow-x-auto border border-code-border">
+            {`// src/services/authService.ts
+
+// Cache em memória (válido enquanto o servidor estiver rodando)
+let cachedToken: string | null = null;
+let tokenExpiration: number | null = null;
+
+export async function getAuthToken(): Promise<string> {
+  const now = Date.now();
+
+  // reutiliza token se ainda estiver válido
+  if (cachedToken && tokenExpiration && now < tokenExpiration) {
+    return cachedToken;
+  }
+
+  const response = await fetch("https://api.acme.com/auth", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      access_key: process.env.ACME_ACCESS_KEY,
+      secret_key: process.env.ACME_SECRET_KEY,
+    }),
+  });
+
+  if (!response.ok) {
+    throw new Error("Falha na autenticação");
+  }
+
+  const data = await response.json();
+
+  cachedToken = data.access_token;
+
+  // margem de segurança antes da expiração
+  tokenExpiration = now + (data.access_token_expires_in - 60) * 1000;
+
+  return cachedToken;
+}`}
+          </pre>
+        </div>
+
+        {/* apiClient */}
+
+        <div className="space-y-2">
+          <h3 className="font-semibold text-sm">src/services/apiClient.ts</h3>
+
+          <pre className="bg-code-bg text-code-text text-xs p-4 rounded-lg overflow-x-auto border border-code-border">
+            {`// src/services/apiClient.ts
+
+import { getAuthToken } from "./authService";
+
+export async function apiRequest<T>(
+  endpoint: string,
+  method: "GET" | "POST" | "PUT" | "DELETE" = "GET",
+  body?: unknown
+): Promise<T> {
+
+  const token = await getAuthToken();
+
+  const response = await fetch(\`https://api.acme.com\${endpoint}\`, {
+    method,
+    headers: {
+      Authorization: \`Bearer \${token}\`,
+      "Content-Type": "application/json",
+    },
+    body: body ? JSON.stringify(body) : undefined,
+  });
+
+  if (!response.ok) {
+    throw new Error(\`Erro na requisição: \${response.status}\`);
+  }
+
+  return response.json();
+}`}
+          </pre>
+        </div>
+      </section>
+
+      {/* ===================================================== */}
+      {/* 6. PREVIEW DO COMPONENTE */}
+      {/* ===================================================== */}
+
+      <section className="space-y-6">
+        <h2 className="text-xl font-semibold">6. Preview do componente</h2>
         <UploadComponentPreview />
+
+        <p className="text-sm">
+          Abaixo está um exemplo simples de um componente que poderia consumir a
+          API utilizando o <code>apiClient</code>.
+        </p>
+
+        <pre className="bg-code-bg text-code-text text-xs p-4 rounded-lg overflow-x-auto border border-code-border">
+          {`// UploadComponentPreview.tsx
+
+import { useState } from "react";
+import { UploadCloud } from "lucide-react";
+import { apiRequest } from "../services/apiClient";
+
+export function UploadComponentPreview() {
+
+  const [file, setFile] = useState<File | null>(null);
+
+  async function handleUpload() {
+    if (!file) return;
+
+    try {
+      await apiRequest("/upload", "POST", {
+        fileName: file.name,
+      });
+
+      alert("Arquivo enviado com sucesso!");
+
+    } catch (error) {
+      console.error(error);
+      alert("Erro ao enviar arquivo");
+    }
+  }
+
+  return (
+    <div className="border rounded-lg p-8 bg-white max-w-md">
+
+      <div className="border-2 border-dashed rounded-lg p-8 text-center space-y-4">
+
+        <UploadCloud size={32} className="mx-auto text-primary-light" />
+
+        <p className="text-sm">
+          Arraste um arquivo ou selecione
+        </p>
+
+        <input
+          type="file"
+          onChange={(e) => setFile(e.target.files?.[0] || null)}
+          className="text-xs"
+        />
+
+        <button
+          onClick={handleUpload}
+          className="bg-primary text-white px-4 py-2 rounded text-sm"
+        >
+          Enviar arquivo
+        </button>
+
+      </div>
+    </div>
+  );
+}`}
+        </pre>
+      </section>
+
+      {/* ===================================================== */}
+      {/* 7. DECISÕES TÉCNICAS */}
+      {/* ===================================================== */}
+
+      <section className="space-y-4">
+        <h2 className="text-xl font-semibold">7. Decisões técnicas</h2>
+
+        <ul className="list-disc ml-6 text-sm space-y-2">
+          <li>
+            A autenticação foi separada em um serviço dedicado (
+            <code>authService</code>) para centralizar a geração do token JWT.
+          </li>
+
+          <li>
+            O token é armazenado em memória enquanto estiver válido, evitando
+            chamadas repetidas ao endpoint de autenticação.
+          </li>
+
+          <li>
+            Foi criado um cliente HTTP reutilizável (<code>apiClient</code>)
+            para centralizar requisições autenticadas.
+          </li>
+
+          <li>
+            As credenciais da API são armazenadas em variáveis de ambiente para
+            evitar exposição no código.
+          </li>
+        </ul>
+      </section>
+
+      {/* ===================================================== */}
+      {/* 8. OTIMIZAÇÃO DE PERFORMANCE */}
+      {/* ===================================================== */}
+
+      <section className="space-y-4">
+        <h2 className="text-xl font-semibold">8. Otimização de performance</h2>
+
+        <p className="text-sm">
+          Para otimizar o consumo de múltiplos endpoints da API, algumas
+          estratégias podem ser utilizadas:
+        </p>
+
+        <ul className="list-disc ml-6 text-sm space-y-2">
+          <li>
+            Reutilizar o token JWT enquanto ele estiver válido, evitando
+            chamadas repetidas ao endpoint de autenticação.
+          </li>
+
+          <li>
+            Realizar chamadas para diferentes endpoints em paralelo utilizando{" "}
+            <code>Promise.all</code>.
+          </li>
+
+          <li>
+            Centralizar requisições em um cliente de API reutilizável, reduzindo
+            duplicação de código e melhorando manutenção.
+          </li>
+        </ul>
+
+        <p className="text-sm">
+          Essas estratégias reduzem o número de requisições desnecessárias e
+          melhoram o tempo de carregamento do formulário de leads.
+        </p>
       </section>
     </div>
   );
