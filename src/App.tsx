@@ -6,12 +6,14 @@ import { Challenge1 } from "./pages/Challenge1";
 import { Challenge2 } from "./pages/Challenge2";
 import { Challenge3 } from "./pages/Challenge3";
 import { Challenge4 } from "./pages/Challenge4";
+import { PullRequest } from "./pages/PullRequest";
 
 const challenges = [
-  { id: 1, title: "Desafio 1 - Filtro" },
-  { id: 2, title: "Desafio 2 - Code Review" },
-  { id: 3, title: "Desafio 3 - Debug de erro" },
-  { id: 4, title: "Desafio 4 - OAuth JWT" },
+  { id: 1, title: "Pull Request " },
+  { id: 2, title: "Desafio 1 - Filtro" },
+  { id: 3, title: "Desafio 2 - Code Review" },
+  { id: 4, title: "Desafio 3 - Debug de erro" },
+  { id: 5, title: "Desafio 4 - OAuth JWT" },
 ];
 
 function App() {
@@ -31,12 +33,14 @@ function App() {
       case 0:
         return <Home onNavigate={setActiveChallenge} />;
       case 1:
-        return <Challenge1 onBack={() => setActiveChallenge(0)} />;
+        return <PullRequest />;
       case 2:
-        return <Challenge2 onBack={() => setActiveChallenge(0)} />;
+        return <Challenge1 onBack={() => setActiveChallenge(0)} />;
       case 3:
-        return <Challenge3 onBack={() => setActiveChallenge(0)} />;
+        return <Challenge2 onBack={() => setActiveChallenge(0)} />;
       case 4:
+        return <Challenge3 onBack={() => setActiveChallenge(0)} />;
+      case 5:
         return <Challenge4 onBack={() => setActiveChallenge(0)} />;
       default:
         return <Home onNavigate={setActiveChallenge} />;
