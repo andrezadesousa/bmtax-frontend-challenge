@@ -1,73 +1,107 @@
-# React + TypeScript + Vite
+# BMTax — Frontend Challenge
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Projeto desenvolvido como resposta ao processo seletivo da BMTax. Apresenta 4 desafios técnicos, cada um documentado em sua própria página com código, explicações e linha de raciocínio.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Tecnologias
 
-## React Compiler
+| Tecnologia   | Versão  |
+| ------------ | ------- |
+| React        | 19.2.0  |
+| TypeScript   | 5.9.3   |
+| Vite         | 7.3.1   |
+| Tailwind CSS | 3.4.17  |
+| Lucide React | 0.577.0 |
+| Cypress      | 15.11.0 |
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## Desafios
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### Desafio 1 — Filtro de Itens
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+Sistema de busca que filtra uma lista de itens em tempo real. Utiliza `useState` para controlar o input e `useMemo` para evitar recálculos desnecessários do filtro. A busca é case-insensitive e reativa a cada tecla digitada.
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+### Desafio 2 — Code Review
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+Análise de uma Pull Request fictícia (`feature/user-management → main`) com identificação de problemas: mutação direta de estado, uso de `forceUpdate()` e ausência de boas práticas do React. Apresenta o código original com problemas e a versão refatorada com Hooks.
+
+### Desafio 3 — Debug de Erro em Produção
+
+Investigação de um `TypeError: Cannot read properties of null` em produção. Inclui análise do stack trace, identificação da causa raiz e duas soluções implementadas: verificação explícita e optional chaining (`?.`).
+
+### Desafio 4 — Autenticação OAuth JWT
+
+Implementação de um serviço de autenticação com cache de token, renovação automática e suporte a requisições paralelas. Documenta o raciocínio, pseudocódigo, fluxo da aplicação e as decisões técnicas tomadas.
+
+---
+
+## Estrutura do Projeto
+
+```
+src/
+├── components/        # Componentes reutilizáveis
+│   ├── CodeBlock/
+│   ├── CollapsibleSection/
+│   ├── ConversationCard/
+│   ├── DocLinks/
+│   ├── FlowDiagram/
+│   ├── Header/
+│   ├── InfoCard/
+│   ├── ItemList/
+│   ├── LeadsFormPreview/
+│   ├── PageHeader/
+│   ├── Review/
+│   ├── SearchInput/
+│   ├── Sidebar/
+│   ├── StickyTOC/
+│   └── WeatherWidget/
+├── data/              # Dados e constantes de cada desafio
+├── pages/             # Páginas de cada desafio + Home
+├── types/             # Tipagens TypeScript
+└── App.tsx            # Roteamento e controle de navegação
+cypress/
+└── e2e/               # Testes end-to-end por desafio
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+---
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## Como Rodar
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+# Instalar dependências
+npm install
+
+# Iniciar servidor de desenvolvimento
+npm run dev
+
+# Build de produção
+npm run build
+
+# Rodar testes E2E
+npx cypress run
+
+# Abrir Cypress no modo interativo
+npx cypress open
 ```
+
+---
+
+## Scripts Disponíveis
+
+| Script            | Descrição                                     |
+| ----------------- | --------------------------------------------- |
+| `npm run dev`     | Inicia o servidor de desenvolvimento          |
+| `npm run build`   | Compila TypeScript e gera o build de produção |
+| `npm run lint`    | Executa o ESLint no projeto                   |
+| `npm run preview` | Visualiza o build de produção localmente      |
+
+---
+
+## Autora
+
+**Andreza de Sousa** — Desenvolvedora Front-end Júnior
+
+- [GitHub](https://github.com/andrezadesousa)
+- [LinkedIn](https://www.linkedin.com/in/sousa-andreza/)
