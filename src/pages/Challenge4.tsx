@@ -2,7 +2,7 @@ import { FileText, Key, Lightbulb, Server, Shield } from "lucide-react";
 import { CodeExample } from "../components/CodeExample/CodeExample";
 import { FlowDiagram } from "../components/FlowDiagram/FlowDiagram";
 import { PageHeader } from "../components/PageHeader/PageHeader";
-import { UploadComponentPreview } from "../components/UploadComponentPreview/UploadComponentPreview";
+import { LeadsFormPreview } from "../components/LeadsFormPreview/LeadsFormPreview";
 
 export function Challenge4() {
   return (
@@ -189,11 +189,12 @@ export function Challenge4() {
       show authentication error
 }
 
-function uploadFile(file) {
+function submitLeadForm(formData) {
 
   token = authenticate()
 
-  send file to API
+  send POST request to /leads
+  body = formData
   using Authorization: Bearer token
 }
 `}
@@ -227,6 +228,22 @@ function uploadFile(file) {
           Essa separação ajuda a manter responsabilidades claras e facilita a
           reutilização do código.
         </p>
+
+        {/* Nota Server Side */}
+        <div className="bg-primary-light/10 border border-primary-light/30 rounded-lg p-4 text-sm space-y-2">
+          <p className="font-semibold text-primary-dark text-xs uppercase tracking-wide">
+            Por que isso funciona no contexto Server Side?
+          </p>
+          <p className="leading-relaxed">
+            Como a aplicação roda no servidor (Next.js Server Component ou Route
+            Handler), o <code>process.env</code> nunca é enviado ao browser — as
+            credenciais ficam protegidas no processo Node.js. O cache em memória
+            do módulo (<code>cachedToken</code>) também persiste enquanto o
+            servidor estiver rodando, o que significa que todos os usuários
+            compartilham o mesmo token válido sem precisar gerar um novo a cada
+            requisição.
+          </p>
+        </div>
 
         {/* authService */}
 
@@ -285,11 +302,7 @@ export async function getAuthToken(): Promise<string> {
 
 import { getAuthToken } from "./authService";
 
-export async function apiRequest<T>(
-  endpoint: string,
-  method: "GET" | "POST" | "PUT" | "DELETE" = "GET",
-  body?: unknown
-): Promise<T> {
+export async function apiRequest(endpoint, method = "GET", body) {
 
   const token = await getAuthToken();
 
@@ -318,66 +331,78 @@ export async function apiRequest<T>(
 
       <section className="space-y-6">
         <h2 className="text-xl font-semibold">6. Preview do componente</h2>
-        <UploadComponentPreview />
 
         <p className="text-sm">
-          Abaixo está um exemplo simples de um componente que poderia consumir a
-          API utilizando o <code>apiClient</code>.
+          Abaixo está um exemplo visual do formulário de cadastro de leads que
+          consumiria a API utilizando o <code>apiRequest</code>.
         </p>
 
+        <LeadsFormPreview />
+
         <pre className="bg-code-bg text-code-text text-xs p-4 rounded-lg overflow-x-auto border border-code-border">
-          {`// UploadComponentPreview.tsx
+          {`// LeadsFormPreview.tsx
 
 import { useState } from "react";
-import { UploadCloud } from "lucide-react";
 import { apiRequest } from "../services/apiClient";
 
-export function UploadComponentPreview() {
+export function LeadsFormPreview() {
 
-  const [file, setFile] = useState<File | null>(null);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [company, setCompany] = useState("");
 
-  async function handleUpload() {
-    if (!file) return;
+  async function handleSubmit(e) {
+    e.preventDefault();
 
     try {
-      await apiRequest("/upload", "POST", {
-        fileName: file.name,
+      await apiRequest("/leads", "POST", {
+        name,
+        email,
+        phone,
+        company,
       });
 
-      alert("Arquivo enviado com sucesso!");
+      alert("Lead cadastrado com sucesso!");
 
     } catch (error) {
       console.error(error);
-      alert("Erro ao enviar arquivo");
+      alert("Erro ao cadastrar lead");
     }
   }
 
   return (
-    <div className="border rounded-lg p-8 bg-white max-w-md">
+    <form onSubmit={handleSubmit}>
 
-      <div className="border-2 border-dashed rounded-lg p-8 text-center space-y-4">
+      <input
+        placeholder="Nome"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+      />
 
-        <UploadCloud size={32} className="mx-auto text-primary-light" />
+      <input
+        placeholder="E-mail"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+      />
 
-        <p className="text-sm">
-          Arraste um arquivo ou selecione
-        </p>
+      <input
+        placeholder="Telefone"
+        value={phone}
+        onChange={(e) => setPhone(e.target.value)}
+      />
 
-        <input
-          type="file"
-          onChange={(e) => setFile(e.target.files?.[0] || null)}
-          className="text-xs"
-        />
+      <input
+        placeholder="Empresa"
+        value={company}
+        onChange={(e) => setCompany(e.target.value)}
+      />
 
-        <button
-          onClick={handleUpload}
-          className="bg-primary text-white px-4 py-2 rounded text-sm"
-        >
-          Enviar arquivo
-        </button>
+      <button type="submit">
+        Cadastrar lead
+      </button>
 
-      </div>
-    </div>
+    </form>
   );
 }`}
         </pre>
