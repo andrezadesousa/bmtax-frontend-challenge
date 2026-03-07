@@ -1,4 +1,5 @@
 import { FileCode, Github, Linkedin, Home, X } from "lucide-react";
+import { WeatherWidget } from "../WeatherWidget/WeatherWidget";
 
 type Challenge = {
   id: number;
@@ -68,6 +69,7 @@ export function Sidebar({
           <span className="text-xs md:text-sm text-surface-light">
             Desenvolvedora Front-end
           </span>
+          <WeatherWidget />
         </div>
 
         {/* Navigation */}
