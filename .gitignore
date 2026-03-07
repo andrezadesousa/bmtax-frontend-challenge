@@ -28,3 +28,9 @@ dist-ssr
 
 # Firebase
 .firebase
+
+# Cypress
+cypress/screenshots
+cypress/videos
+cypress/downloads
+cypress/snapshots
