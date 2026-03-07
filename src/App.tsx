@@ -31,13 +31,13 @@ function App() {
       case 0:
         return <Home onNavigate={setActiveChallenge} />;
       case 1:
-        return <Challenge1 />;
+        return <Challenge1 onBack={() => setActiveChallenge(0)} />;
       case 2:
-        return <Challenge2 />;
+        return <Challenge2 onBack={() => setActiveChallenge(0)} />;
       case 3:
-        return <Challenge3 />;
+        return <Challenge3 onBack={() => setActiveChallenge(0)} />;
       case 4:
-        return <Challenge4 />;
+        return <Challenge4 onBack={() => setActiveChallenge(0)} />;
       default:
         return <Home onNavigate={setActiveChallenge} />;
     }
