@@ -21,28 +21,36 @@ describe("Challenge 3 — Bug Analysis", () => {
   });
 
   it("renders the explanation info card", () => {
-    cy.contains("Andreza, por que o erro acontece?").should("be.visible");
+    cy.contains("Andreza, por que o erro acontece?")
+      .scrollIntoView()
+      .should("be.visible");
   });
 
   it("renders the buggy code block", () => {
-    cy.contains("Código com problema").should("be.visible");
-    cy.contains("ProductDisplay.jsx").should("be.visible");
+    cy.contains("Código com problema").scrollIntoView().should("be.visible");
+    cy.contains("ProductDisplay.jsx").scrollIntoView().should("be.visible");
   });
 
   it("renders both solution sections", () => {
-    cy.contains("Solução 1: Verificação explicita").should("be.visible");
-    cy.contains("Solução 2: Optional Chaining").should("be.visible");
+    cy.contains("Solução 1: Verificação explicita")
+      .scrollIntoView()
+      .should("be.visible");
+    cy.contains("Solução 2: Optional Chaining")
+      .scrollIntoView()
+      .should("be.visible");
   });
 
   it("renders both fixed code blocks", () => {
-    cy.get("code, pre").contains("ProductDisplay.tsx").should("be.visible");
+    cy.contains("span", "ProductDisplay.tsx")
+      .scrollIntoView()
+      .should("be.visible");
   });
 
   it("renders the analysis summary footer", () => {
-    cy.contains("Resumo da Análise").should("be.visible");
-    cy.contains("Causa").should("be.visible");
-    cy.contains("Impacto").should("be.visible");
-    cy.contains("Correção").should("be.visible");
+    cy.contains("Resumo da Análise").scrollIntoView().should("be.visible");
+    cy.contains("Causa").scrollIntoView().should("be.visible");
+    cy.contains("Impacto").scrollIntoView().should("be.visible");
+    cy.contains("Correção").scrollIntoView().should("be.visible");
   });
 
   it("has a back button that returns to Home", () => {
