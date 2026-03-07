@@ -1,107 +1,147 @@
-# BMTax — Frontend Challenge
+# 🚀 BMTax Frontend Challenge — React + TypeScript
 
-Projeto desenvolvido como resposta ao processo seletivo da BMTax. Apresenta 4 desafios técnicos, cada um documentado em sua própria página com código, explicações e linha de raciocínio.
+![React](https://img.shields.io/badge/React-19-blue?logo=react)
+![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?logo=typescript)
+![Vite](https://img.shields.io/badge/Vite-7-646CFF?logo=vite)
+![Tailwind](https://img.shields.io/badge/Tailwind_CSS-3.4-38B2AC?logo=tailwind-css)
+![Cypress](https://img.shields.io/badge/Cypress-15-17202C?logo=cypress)
 
----
+Projeto desenvolvido como resposta ao desafio técnico da **BMTax**. A aplicação apresenta **quatro desafios de engenharia frontend**, cada um documentado com análises profundas, códigos e linhas de raciocínio.
 
-## Tecnologias
+O objetivo foi demonstrar competências em:
 
-| Tecnologia   | Versão  |
-| ------------ | ------- |
-| React        | 19.2.0  |
-| TypeScript   | 5.9.3   |
-| Vite         | 7.3.1   |
-| Tailwind CSS | 3.4.17  |
-| Lucide React | 0.577.0 |
-| Cypress      | 15.11.0 |
-
----
-
-## Desafios
-
-### Desafio 1 — Filtro de Itens
-
-Sistema de busca que filtra uma lista de itens em tempo real. Utiliza `useState` para controlar o input e `useMemo` para evitar recálculos desnecessários do filtro. A busca é case-insensitive e reativa a cada tecla digitada.
-
-### Desafio 2 — Code Review
-
-Análise de uma Pull Request fictícia (`feature/user-management → main`) com identificação de problemas: mutação direta de estado, uso de `forceUpdate()` e ausência de boas práticas do React. Apresenta o código original com problemas e a versão refatorada com Hooks.
-
-### Desafio 3 — Debug de Erro em Produção
-
-Investigação de um `TypeError: Cannot read properties of null` em produção. Inclui análise do stack trace, identificação da causa raiz e duas soluções implementadas: verificação explícita e optional chaining (`?.`).
-
-### Desafio 4 — Autenticação OAuth JWT
-
-Implementação de um serviço de autenticação com cache de token, renovação automática e suporte a requisições paralelas. Documenta o raciocínio, pseudocódigo, fluxo da aplicação e as decisões técnicas tomadas.
+- 🏗️ **Arquitetura:** Organização escalável e componentização.
+- 🔍 **Análise:** Code review e identificação de más práticas.
+- 🐞 **Debugging:** Investigação de erros em produção e análise de stack trace.
+- 🔐 **Segurança:** Implementação de fluxos OAuth JWT com cache.
 
 ---
 
-## Estrutura do Projeto
+## 🔗 Demo
 
-```
+A aplicação pode ser acessada online:  
+👉 [**Visualizar Projeto Live**](https://bmtax-front-end-challenge.web.app/)
+
+---
+
+## 🛠️ Tecnologias e Versões
+
+| Tecnologia     | Versão  |
+| :------------- | :------ |
+| **React**      | 19.2.0  |
+| **TypeScript** | 5.9.3   |
+| **Vite**       | 7.3.1   |
+| **Tailwind**   | 3.4.17  |
+| **Lucide**     | 0.577.0 |
+| **Cypress**    | 15.11.0 |
+
+---
+
+## 🧩 Desafios Implementados
+
+### 1. Filtro de Itens
+
+Sistema de busca em tempo real com foco em performance.
+
+- Filtro **case-insensitive**.
+- Otimização com `useMemo` para evitar re-renderizações desnecessárias.
+
+### 2. Code Review
+
+Análise crítica de uma Pull Request simulada.
+
+- Identificação de **mutação direta de estado** e uso indevido de `forceUpdate()`.
+- Refatoração completa para **Hooks modernos** e lógica declarativa.
+
+### 3. Debug de Erro em Produção
+
+Investigação de um `TypeError` real através de stack trace.
+
+- Diagnóstico de falha em variáveis nulas/undefined.
+- Implementação de defesa com **Optional Chaining (`?.`)** e Nullish Coalescing.
+
+### 4. Fluxo de Autenticação OAuth JWT
+
+Desenvolvimento de um serviço de autenticação _Server-Side_.
+
+- **Cache de Token:** Evita múltiplas chamadas desnecessárias ao `/auth`.
+- **Proteção de Race Condition:** Sincronização de requests paralelos.
+- **Auto-renew:** Renovação automática 5 minutos antes da expiração.
+
+---
+
+## 📂 Estrutura do Projeto
+
+O projeto utiliza uma abordagem **Component-Driven**:
+
+```text
 src/
-├── components/        # Componentes reutilizáveis
-│   ├── CodeBlock/
-│   ├── CollapsibleSection/
-│   ├── ConversationCard/
-│   ├── DocLinks/
-│   ├── FlowDiagram/
-│   ├── Header/
-│   ├── InfoCard/
-│   ├── ItemList/
-│   ├── LeadsFormPreview/
-│   ├── PageHeader/
-│   ├── Review/
-│   ├── SearchInput/
-│   ├── Sidebar/
-│   ├── StickyTOC/
-│   └── WeatherWidget/
-├── data/              # Dados e constantes de cada desafio
-├── pages/             # Páginas de cada desafio + Home
-├── types/             # Tipagens TypeScript
-└── App.tsx            # Roteamento e controle de navegação
-cypress/
-└── e2e/               # Testes end-to-end por desafio
+├── components/    # Componentes modulares e reutilizáveis
+├── data/          # Mock data e constantes dos desafios
+├── pages/         # Views principais de cada desafio
+├── types/         # Definições globais de TypeScript
+└── App.tsx        # Orquestração de navegação
 ```
 
----
+🧪 Testes E2E (Cypress)
+Foram implementados testes para garantir a integridade dos fluxos principais:
 
-## Como Rodar
+Navegação entre desafios via Sidebar.
+
+Funcionamento do filtro de busca.
+
+Responsividade e renderização de componentes críticos.
+
+Para rodar os testes:
 
 ```bash
-# Instalar dependências
-npm install
-
-# Iniciar servidor de desenvolvimento
-npm run dev
-
-# Build de produção
-npm run build
-
-# Rodar testes E2E
+# Modo Headless
 npx cypress run
 
-# Abrir Cypress no modo interativo
+# Modo Interativo (Interface)
 npx cypress open
 ```
 
+🚀 Como Rodar o Projeto
+
+1. Clonar e Instalar:
+
+```bash
+git clone https://github.com/andrezadesousa/bmtax-frontend-challenge
+npm install
+```
+
+2. Desenvolvimento:
+
+```bash
+npm run dev
+```
+
+3. Build para Produção:
+
+```bash
+npm run build
+```
+
+🌟 Boas Práticas Aplicadas
+
+[x] Strong Typing: TypeScript em 100% do código.
+
+[x] Performance: Memoization em cálculos custosos.
+
+[x] Clean Code: Nomenclatura semântica e funções puras.
+
+[x] Segurança: Secrets protegidos por variáveis de ambiente.
+
 ---
 
-## Scripts Disponíveis
+## 📖 Aprendizados Principais
 
-| Script            | Descrição                                     |
-| ----------------- | --------------------------------------------- |
-| `npm run dev`     | Inicia o servidor de desenvolvimento          |
-| `npm run build`   | Compila TypeScript e gera o build de produção |
-| `npm run lint`    | Executa o ESLint no projeto                   |
-| `npm run preview` | Visualiza o build de produção localmente      |
+> "Neste projeto, meu maior desafio foi gerenciar a concorrência de requests no Desafio 4. Aprendi a utilizar promessas como cache para evitar Race Conditions no servidor — armazenando a `Promise` em andamento em vez de apenas o resultado — algo que não conhecia anteriormente e que mudou minha forma de pensar sobre autenticação assíncrona."
 
----
+Outros aprendizados relevantes ao longo do projeto:
 
-## Autora
-
-**Andreza de Sousa** — Desenvolvedora Front-end Júnior
-
-- [GitHub](https://github.com/andrezadesousa)
-- [LinkedIn](https://www.linkedin.com/in/sousa-andreza/)
+- **`useMemo` na prática:** Entender quando e por que memoizar fez diferença real de performance no Desafio 1, não apenas como conceito teórico.
+- **Code Review com empatia:** O Desafio 2 me ensinou a revisar código pensando em quem escreveu — identificar problemas sem julgamento e propor refatorações claras é uma habilidade tanto técnica quanto humana.
+- **Debugging sistemático:** O Desafio 3 reforçou que um `TypeError` em produção exige leitura de stack trace linha a linha, não apenas tentativa e erro. Optional chaining (`?.`) virou parte permanente do meu toolkit.
+- **Documentar o raciocínio importa:** Escrever o _porquê_ de cada decisão técnica me ajudou a consolidar o aprendizado e comunicar melhor minhas escolhas.
