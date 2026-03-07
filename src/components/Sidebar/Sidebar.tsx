@@ -1,4 +1,11 @@
-import { FileCode, Github, Linkedin, Home, X } from "lucide-react";
+import {
+  FileCode,
+  Github,
+  Linkedin,
+  Home,
+  X,
+  GitPullRequest,
+} from "lucide-react";
 import { WeatherWidget } from "../WeatherWidget/WeatherWidget";
 
 type Challenge = {
@@ -94,21 +101,26 @@ export function Sidebar({
             </li>
 
             {/* Challenges */}
-            {challenges.map((challenge) => (
-              <li key={challenge.id}>
-                <button
-                  onClick={() => handleSelect(challenge.id)}
-                  className={`w-full flex items-center gap-3 px-4 py-3 text-left transition-colors ${
-                    activeChallenge === challenge.id
-                      ? "bg-primary-light text-text-white"
-                      : "hover:bg-primary-medium text-surface-light hover:text-text-white"
-                  }`}
-                >
-                  <FileCode size={18} />
-                  <span className="text-sm font-medium">{challenge.title}</span>
-                </button>
-              </li>
-            ))}
+            {challenges.map((challenge) => {
+              const Icon = challenge.id === 1 ? GitPullRequest : FileCode;
+              return (
+                <li key={challenge.id}>
+                  <button
+                    onClick={() => handleSelect(challenge.id)}
+                    className={`w-full flex items-center gap-3 px-4 py-3 text-left transition-colors ${
+                      activeChallenge === challenge.id
+                        ? "bg-primary-light text-text-white"
+                        : "hover:bg-primary-medium text-surface-light hover:text-text-white"
+                    }`}
+                  >
+                    <Icon size={18} />
+                    <span className="text-sm font-medium">
+                      {challenge.title}
+                    </span>
+                  </button>
+                </li>
+              );
+            })}
           </ul>
         </nav>
 
