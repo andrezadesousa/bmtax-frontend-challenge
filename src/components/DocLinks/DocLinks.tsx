@@ -8,7 +8,7 @@ interface Props {
 
 export function DocLinks({
   links,
-  title = "Documentacoes de referencia",
+  title = "Documentações de referência",
 }: Props) {
   return (
     <section className="bg-surface-light border border-primary-light/20 rounded-lg p-3 md:p-4">
