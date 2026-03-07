@@ -4,7 +4,6 @@ import {
   Lightbulb,
   AlertTriangle,
   CheckCircle2,
-  FileCode,
   BookOpen,
   Zap,
   Server,
@@ -14,226 +13,43 @@ import {
   Shield,
   ArrowRight,
 } from "lucide-react";
-
-const apiDocumentation = `POST https://api.acme.com/auth
-
-Request Body:
-  access_key  - string - Ex.: DFt7Oqzn_LGyYnDGLwX7oA
-  secret_key  - string - Ex.: dNiIFM34DSvKIAubw9nfJL7q...
-
-Response (HTTP 200):
-  access_token            - string  - Token de acesso
-  access_token_expires_in - integer - Tempo de vida em segundos (3600)
-  refresh_token           - string  - Token de atualizacao
-  refresh_token_expires_in - integer - Tempo de vida em segundos`;
-
-const authServiceCode = `// src/services/authService.ts
-
-// Variaveis em memoria para cache do token
-let cachedToken: string | null = null;
-let tokenExpiration: number | null = null;
-
-export async function getAuthToken(): Promise<string> {
-  const now = Date.now();
-
-  // Se o token ainda esta valido, reutiliza
-  if (cachedToken && tokenExpiration && now < tokenExpiration) {
-    return cachedToken;
-  }
-
-  // Caso contrario, gera um novo token
-  const response = await fetch("https://api.acme.com/auth", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      access_key: process.env.ACME_ACCESS_KEY,
-      secret_key: process.env.ACME_SECRET_KEY,
-    }),
-  });
-
-  if (!response.ok) {
-    throw new Error("Falha na autenticacao");
-  }
-
-  const data = await response.json();
-
-  // Armazena em cache com margem de seguranca (5 min antes)
-  cachedToken = data.access_token;
-  tokenExpiration = now + (data.access_token_expires_in - 300) * 1000;
-
-  return cachedToken;
-}`;
-
-const apiClientCode = `// src/services/apiClient.ts
-import { getAuthToken } from "./authService";
-
-export async function apiRequest<T>(
-  endpoint: string,
-  method: "GET" | "POST" | "PUT" | "DELETE" = "GET",
-  body?: unknown
-): Promise<T> {
-  const token = await getAuthToken();
-
-  const response = await fetch(\`https://api.acme.com\${endpoint}\`, {
-    method,
-    headers: {
-      "Authorization": \`Bearer \${token}\`,
-      "Content-Type": "application/json",
-    },
-    body: body ? JSON.stringify(body) : undefined,
-  });
-
-  if (!response.ok) {
-    throw new Error(\`Erro na requisicao: \${response.status}\`);
-  }
-
-  return response.json();
-}`;
-
-const parallelRequestsCode = `// Exemplo de uso no formulario de Leads
-// src/app/leads/page.tsx
-
-import { apiRequest } from "@/services/apiClient";
-
-export default async function LeadsPage() {
-  // Requisicoes em paralelo para melhor performance
-  const [leads, products, regions] = await Promise.all([
-    apiRequest("/leads"),
-    apiRequest("/products"),
-    apiRequest("/regions"),
-  ]);
-
-  return (
-    <LeadsForm
-      leads={leads}
-      products={products}
-      regions={regions}
-    />
-  );
-}`;
-
-type CodeBlockProps = {
-  code: string;
-  filename: string;
-  variant?: "neutral" | "success";
-};
-
-function CodeBlock({ code, filename, variant = "neutral" }: CodeBlockProps) {
-  const lines = code.split("\n");
-
-  return (
-    <div className="border border-code-border rounded-lg overflow-hidden">
-      <div
-        className={`flex items-center gap-2 px-4 py-2 border-b ${
-          variant === "success"
-            ? "bg-diff-add-bg border-diff-add-border"
-            : "bg-code-header border-code-border"
-        }`}
-      >
-        <FileCode
-          size={14}
-          className={
-            variant === "success"
-              ? "text-diff-add-line"
-              : "text-code-lineNumber"
-          }
-        />
-        <span
-          className={`text-xs font-mono ${
-            variant === "success" ? "text-diff-add-line" : "text-code-text"
-          }`}
-        >
-          {filename}
-        </span>
-      </div>
-
-      <div className="bg-code-bg overflow-x-auto">
-        <table className="w-full text-xs font-mono">
-          <tbody>
-            {lines.map((line, idx) => (
-              <tr key={idx}>
-                <td className="w-8 px-2 py-0.5 text-right text-code-lineNumber select-none border-r border-code-border">
-                  {idx + 1}
-                </td>
-                <td className="px-3 py-0.5 whitespace-pre text-code-text">
-                  {line || " "}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </div>
-  );
-}
-
-type StepCardProps = {
-  number: number;
-  title: string;
-  children: React.ReactNode;
-};
-
-function StepCard({ number, title, children }: StepCardProps) {
-  return (
-    <div className="border-l-4 border-l-primary-light bg-surface-light p-4 md:p-5 rounded-r-lg">
-      <div className="flex items-center gap-3 mb-3">
-        <span className="flex items-center justify-center w-7 h-7 rounded-full bg-primary-light text-text-white text-xs font-bold">
-          {number}
-        </span>
-        <h3 className="text-sm font-semibold text-text-dark">{title}</h3>
-      </div>
-      <div className="text-sm text-primary-medium leading-relaxed">
-        {children}
-      </div>
-    </div>
-  );
-}
-
-type ThoughtBubbleProps = {
-  children: React.ReactNode;
-};
-
-function ThoughtBubble({ children }: ThoughtBubbleProps) {
-  return (
-    <div className="bg-surface-light border border-primary-light/30 rounded-lg p-4 relative">
-      <div className="absolute -left-2 top-4 w-4 h-4 bg-surface-light border-l border-b border-primary-light/30 rotate-45" />
-      <p className="text-sm text-primary-medium italic leading-relaxed">
-        {children}
-      </p>
-    </div>
-  );
-}
+import { PageHeader } from "../components/PageHeader/PageHeader";
+import { StaticCodeBlock } from "../components/CodeBlock/StaticCodeBlock";
+import { StepCard } from "../components/StepCard/StepCard";
+import { ThoughtBubble } from "../components/ThoughtBubble/ThoughtBubble";
+import {
+  apiDocumentation,
+  authServiceCode,
+  apiClientCode,
+  envExampleCode,
+  hardcodedCredentialsCode,
+  envUsageCode,
+  leadsPageFullCode,
+} from "../data/challenge4Data";
 
 export function Challenge4() {
   return (
     <div className="p-4 md:p-8 bg-surface-white min-h-full">
-      {/* Header */}
-      <header className="mb-6 md:mb-8">
-        <div className="flex flex-wrap items-center gap-3 mb-3">
-          <div className="flex items-center gap-2 px-3 py-1.5 bg-primary-light/10 rounded-full">
-            <Key size={16} className="text-primary-light" />
-            <span className="text-xs font-medium text-primary-dark">
-              Autenticacao OAuth JWT
-            </span>
-          </div>
-          <div className="flex items-center gap-2 px-3 py-1.5 bg-surface-light rounded-full">
-            <Server size={14} className="text-primary-medium" />
-            <span className="text-xxs font-mono text-primary-medium">
-              Server Side React
-            </span>
-          </div>
-        </div>
-
-        <h1 className="text-xl md:text-2xl font-bold text-text-dark mb-2">
-          Desafio 4 — Implementacao de Autenticacao JWT
-        </h1>
-
-        <p className="text-sm text-primary-medium max-w-3xl leading-relaxed">
-          Fui designada para desenvolver um componente Server Side em React que
-          consome endpoints protegidos por token JWT. Aqui documento minha linha
-          de raciocinio desde a analise da documentacao ate a solucao final.
-        </p>
-      </header>
+      <PageHeader
+        title="Desafio 4 — Implementacao de Autenticacao JWT"
+        description="Fui designada para desenvolver um componente Server Side em React que consome endpoints protegidos por token JWT. Aqui documento minha linha de raciocinio desde a analise da documentacao ate a solucao final."
+        badges={
+          <>
+            <div className="flex items-center gap-2 px-3 py-1.5 bg-primary-light/10 rounded-full">
+              <Key size={16} className="text-primary-light" />
+              <span className="text-xs font-medium text-primary-dark">
+                Autenticacao OAuth JWT
+              </span>
+            </div>
+            <div className="flex items-center gap-2 px-3 py-1.5 bg-surface-light rounded-full">
+              <Server size={14} className="text-primary-medium" />
+              <span className="text-xxs font-mono text-primary-medium">
+                Server Side React
+              </span>
+            </div>
+          </>
+        }
+      />
 
       <div className="space-y-6">
         {/* Meu Pensamento Inicial */}
@@ -318,8 +134,8 @@ export function Challenge4() {
           <div className="space-y-3">
             {[
               {
-                title: "Next.js Docs - Server Actions",
-                url: "nextjs.org/docs/app/building-your-application/data-fetching",
+                title: "React Docs - Server Components",
+                url: "react.dev/reference/rsc/server-components",
                 desc: "Aprendi que Server Components sao ideais para guardar secrets",
               },
               {
@@ -426,6 +242,15 @@ export function Challenge4() {
                 timing em requisicoes longas.
               </p>
             </StepCard>
+
+            <StepCard number={5} title="Usar o refresh token">
+              <p>
+                Quando o access_token expirar, usar o refresh_token para
+                renova-lo sem precisar reautenticar com access_key e secret_key.
+                So volta ao fluxo completo se o refresh_token tambem tiver
+                expirado.
+              </p>
+            </StepCard>
           </div>
         </section>
 
@@ -446,7 +271,7 @@ export function Challenge4() {
                 </strong>{" "}
                 Responsavel por gerar e cachear o token JWT.
               </p>
-              <CodeBlock
+              <StaticCodeBlock
                 code={authServiceCode}
                 filename="src/services/authService.ts"
                 variant="success"
@@ -459,12 +284,106 @@ export function Challenge4() {
                 Wrapper que automaticamente inclui o token em todas as
                 requisicoes.
               </p>
-              <CodeBlock
+              <StaticCodeBlock
                 code={apiClientCode}
                 filename="src/services/apiClient.ts"
                 variant="success"
               />
             </div>
+          </div>
+        </section>
+
+        {/* Variaveis de Ambiente */}
+        <section>
+          <div className="flex items-center gap-2 mb-4">
+            <Shield size={18} className="text-yellow-600" />
+            <h2 className="text-sm font-semibold text-text-dark">
+              Variaveis de Ambiente — Sim, sao obrigatorias
+            </h2>
+          </div>
+
+          <ThoughtBubble>
+            "Espera — se eu preciso de access_key e secret_key no codigo, onde
+            coloco esses valores? Direto no arquivo .ts? Nao, isso e perigoso.
+            Aprendi que credenciais nunca devem entrar no repositorio."
+          </ThoughtBubble>
+
+          <div className="mt-4 space-y-3">
+            <p className="text-xs font-medium text-diff-remove-line uppercase tracking-wide">
+              Forma errada — credencial hardcoded
+            </p>
+            <StaticCodeBlock
+              code={hardcodedCredentialsCode}
+              filename="authService.ts (não fazer isso)"
+              variant="error"
+            />
+          </div>
+
+          <div className="mt-4 space-y-3">
+            <p className="text-xs font-medium text-diff-add-line uppercase tracking-wide">
+              Forma certa — ler do ambiente
+            </p>
+            <StaticCodeBlock
+              code={envUsageCode}
+              filename="authService.ts"
+              variant="success"
+            />
+          </div>
+
+          <div className="mt-4 border-l-4 border-l-primary-light bg-surface-light p-4 rounded-r-lg">
+            <p className="text-xs font-semibold text-text-dark mb-2">
+              Como configurar o .env
+            </p>
+            <StaticCodeBlock
+              code={envExampleCode}
+              filename=".env"
+              variant="neutral"
+            />
+            <ul className="mt-3 space-y-1.5 text-xs text-primary-medium">
+              <li className="flex items-start gap-2">
+                <CheckCircle2
+                  size={13}
+                  className="text-diff-add-line shrink-0 mt-0.5"
+                />
+                <span>
+                  No servidor Node.js, o{" "}
+                  <code className="bg-surface-white px-1 rounded">
+                    process.env
+                  </code>{" "}
+                  le as variaveis do arquivo{" "}
+                  <code className="bg-surface-white px-1 rounded">.env</code>{" "}
+                  via biblioteca como{" "}
+                  <code className="bg-surface-white px-1 rounded">dotenv</code>{" "}
+                  — as credenciais ficam somente no servidor.
+                </span>
+              </li>
+              <li className="flex items-start gap-2">
+                <CheckCircle2
+                  size={13}
+                  className="text-diff-add-line shrink-0 mt-0.5"
+                />
+                <span>
+                  O arquivo{" "}
+                  <code className="bg-surface-white px-1 rounded">.env</code>{" "}
+                  deve estar no{" "}
+                  <code className="bg-surface-white px-1 rounded">
+                    .gitignore
+                  </code>{" "}
+                  — as credenciais nunca entram no repositorio.
+                </span>
+              </li>
+              <li className="flex items-start gap-2">
+                <CheckCircle2
+                  size={13}
+                  className="text-diff-add-line shrink-0 mt-0.5"
+                />
+                <span>
+                  Em producao, as credenciais sao configuradas diretamente nas
+                  variaveis de ambiente da plataforma de deploy — sem nenhum
+                  arquivo.
+                </span>
+              </li>
+            </ul>
           </div>
         </section>
 
@@ -489,8 +408,8 @@ export function Challenge4() {
             </p>
           </div>
 
-          <CodeBlock
-            code={parallelRequestsCode}
+          <StaticCodeBlock
+            code={leadsPageFullCode}
             filename="src/app/leads/page.tsx"
             variant="success"
           />
@@ -569,9 +488,9 @@ export function Challenge4() {
           <ul className="space-y-2 text-sm text-surface-light">
             {[
               "Reutiliza o token enquanto valido (economia de recursos)",
-              "Renova automaticamente quando necessario",
-              "Mantem as credenciais seguras no servidor",
-              "Otimiza performance com requisicoes paralelas",
+              "Usa o refresh_token para renovar sem reautenticar",
+              "Mantem as credenciais em variaveis de ambiente (.env.local)",
+              "Otimiza performance com requisicoes paralelas (Promise.all)",
             ].map((item, idx) => (
               <li key={idx} className="flex items-center gap-2">
                 <CheckCircle2
