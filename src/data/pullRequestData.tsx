@@ -5,6 +5,9 @@ import {
   Rocket,
   Settings,
   GitCommit,
+  ThumbsUp,
+  Heart,
+  Smile,
 } from "lucide-react";
 
 export type Commit = {
@@ -689,3 +692,109 @@ export const prDescription = (
     </section>
   </div>
 );
+
+export type Conversation = {
+  id: number;
+  author: {
+    name: string;
+    username: string;
+    avatar: string;
+    email?: string;
+  };
+  content: string;
+  timestamp: string;
+  reactions?: { emoji: string; count: number }[];
+  isReply?: boolean;
+  replyTo?: string;
+};
+
+export const conversations: Conversation[] = [
+  {
+    id: 1,
+    author: {
+      name: "Andreza Sousa",
+      username: "andrezadesousa",
+      avatar:
+        "https://avatars.githubusercontent.com/u/62725350?s=400&u=9d835449a30bc547b5e04d6b949296c42cdc7733&v=4",
+    },
+    content:
+      "Olá pessoal! Finalizei a implementação dos 4 desafios técnicos. Gostaria que vocês revisassem o código e me dessem feedback. Tentei seguir as melhores práticas de componentização e organização do código.",
+    timestamp: "2 days ago",
+    reactions: [
+      { emoji: "thumbsup", count: 2 },
+      { emoji: "heart", count: 1 },
+    ],
+  },
+  {
+    id: 2,
+    author: {
+      name: "Lucas Zorzo",
+      username: "lzorzo",
+      avatar:
+        "https://media.licdn.com/dms/image/v2/D4D03AQF5m0CHNMSChw/profile-displayphoto-scale_200_200/B4DZh2ebYFGsAY-/0/1754334345421?e=2147483647&v=beta&t=j7QZn6h9yLnwp60vZbfqOL_4sg44QbeysKzouK67Wo8",
+      email: "lzorzo@bmtax.com.br",
+    },
+    content:
+      "Muito bom, Andreza! Gostei bastante da estrutura de componentes que você criou. A separação de responsabilidades está bem clara. Apenas uma sugestão: no Challenge4, seria interessante adicionar um tratamento de erro mais robusto para casos de falha na autenticação.",
+    timestamp: "1 day ago",
+    reactions: [{ emoji: "thumbsup", count: 1 }],
+  },
+  {
+    id: 3,
+    author: {
+      name: "Andreza Sousa",
+      username: "andrezadesousa",
+      avatar:
+        "https://avatars.githubusercontent.com/u/62725350?s=400&u=9d835449a30bc547b5e04d6b949296c42cdc7733&v=4",
+    },
+    content:
+      "Obrigada pelo feedback, Lucas! Vou adicionar o tratamento de erro que você sugeriu. Faz total sentido ter uma estratégia de retry e fallback para esses casos.",
+    timestamp: "1 day ago",
+    isReply: true,
+    replyTo: "lzorzo",
+  },
+  {
+    id: 4,
+    author: {
+      name: "Tiago Forte",
+      username: "tforte",
+      avatar:
+        "https://media.licdn.com/dms/image/v2/D4D03AQF5qaMIxYJ-Xw/profile-displayphoto-shrink_200_200/B4DZVmaorxHkAY-/0/1741180013772?e=2147483647&v=beta&t=K8yMeOMmu6W5cH3GtA6HgmjjdkaWFtA6F4EsHyeLGtw",
+      email: "tforte@bmtax.com.br",
+    },
+    content:
+      "Excelente trabalho! A cobertura de testes com Cypress ficou muito boa. Gostei especialmente de como você documentou cada desafio com explicações detalhadas. Isso demonstra preocupação com a legibilidade e manutenção do código. Aprovado!",
+    timestamp: "12 hours ago",
+    reactions: [
+      { emoji: "heart", count: 2 },
+      { emoji: "smile", count: 1 },
+    ],
+  },
+  {
+    id: 5,
+    author: {
+      name: "Lucas Zorzo",
+      username: "lzorzo",
+      avatar:
+        "https://media.licdn.com/dms/image/v2/D4D03AQF5m0CHNMSChw/profile-displayphoto-scale_200_200/B4DZh2ebYFGsAY-/0/1754334345421?e=2147483647&v=beta&t=j7QZn6h9yLnwp60vZbfqOL_4sg44QbeysKzouK67Wo8",
+      email: "lzorzo@bmtax.com.br",
+    },
+    content:
+      "Concordo com o Tiago. A implementação está sólida e bem estruturada. O deploy no Firebase também funcionou perfeitamente. LGTM!",
+    timestamp: "10 hours ago",
+    reactions: [{ emoji: "thumbsup", count: 2 }],
+  },
+];
+
+export const getReactionIcon = (emoji: string) => {
+  switch (emoji) {
+    case "thumbsup":
+      return <ThumbsUp size={12} />;
+    case "heart":
+      return <Heart size={12} />;
+    case "smile":
+      return <Smile size={12} />;
+    default:
+      return null;
+  }
+};
