@@ -4,10 +4,15 @@ import { ReviewCard } from "../components/Review/ReviewCard";
 import { PullRequestHeader } from "../components/Review/PullRequestHeader";
 import { originalCode, fixedCode, reviewItems } from "../data/reviewData";
 
-export function Challenge2() {
+const GITHUB_URL =
+  "https://github.com/andrezadesousa/bmtax-frontend-challenge/blob/main/src/pages/Challenge2.tsx";
+
+export function Challenge2({ onBack }: { onBack?: () => void }) {
   return (
     <div className="p-4 md:p-8 bg-surface-white min-h-full">
       <PullRequestHeader
+        onBack={onBack}
+        githubUrl={GITHUB_URL}
         prNumber="01"
         sourceBranch="feature/user-management"
         targetBranch="main"
