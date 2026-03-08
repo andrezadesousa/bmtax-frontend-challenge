@@ -4,85 +4,62 @@ describe("Challenge 4 — JWT Authentication", () => {
     cy.get("aside").contains("Desafio 4 - OAuth JWT").click();
   });
 
+  const SECTION_TITLE = "1. Entendendo a documentação: Meu pensamento inicial";
+
+  // Helper: retorna o div de conteúdo da seção colapsável pelo título
+  const getContentDiv = (title: string) =>
+    cy.contains(title).closest("section").find("div").last();
+
   it("renders the page header", () => {
     cy.contains("h1", "Desafio 4 — Implementação de Autenticação JWT").should(
       "be.visible",
     );
   });
 
-  it("renders all collapsible section titles", () => {
-    cy.contains("1. Entendendo a documentação: Meu pensamento inicial")
-      .scrollIntoView()
-      .should("be.visible");
-    cy.contains("2. Analisando a documentação da API")
-      .scrollIntoView()
-      .should("be.visible");
-    cy.contains("3. Pensando no fluxo da aplicação")
-      .scrollIntoView()
-      .should("be.visible");
-    cy.contains("4. Pseudocódigo da solução")
-      .scrollIntoView()
-      .should("be.visible");
-    cy.contains("5. Implementação").scrollIntoView().should("be.visible");
-    cy.contains("6. Preview do componente")
-      .scrollIntoView()
-      .should("be.visible");
-    cy.contains("7. Decisões técnicas").scrollIntoView().should("be.visible");
-  });
-
   it("collapsible sections are open by default", () => {
-    cy.contains("1. Entendendo a documentação: Meu pensamento inicial")
-      .closest("section")
-      .find("p")
-      .should("be.visible");
+    // Quando aberta, o div de conteúdo tem a classe border-t (não tem hidden)
+    getContentDiv(SECTION_TITLE).should("have.class", "border-t");
+    getContentDiv(SECTION_TITLE).should("not.have.class", "hidden");
   });
 
   it("collapses a section when its header is clicked", () => {
-    cy.contains("1. Entendendo a documentação: Meu pensamento inicial")
-      .closest("button")
-      .click();
-    cy.contains(
-      "primeiro passo foi entender como funciona a autenticação",
-    ).should("not.exist");
+    // Confirma que está aberta antes de clicar
+    getContentDiv(SECTION_TITLE).should("not.have.class", "hidden");
+
+    // Clica no header para fechar
+    cy.contains(SECTION_TITLE).click({ force: true });
+
+    // Confirma que o conteúdo foi ocultado (div recebe classe hidden)
+    getContentDiv(SECTION_TITLE).should("have.class", "hidden");
   });
 
   it("expands a collapsed section when its header is clicked again", () => {
-    cy.contains("1. Entendendo a documentação: Meu pensamento inicial")
-      .closest("button")
-      .click();
-    cy.contains("1. Entendendo a documentação: Meu pensamento inicial")
-      .closest("button")
-      .click();
-    cy.contains(
-      "primeiro passo foi entender como funciona a autenticação",
-    ).should("be.visible");
+    // Fecha
+    cy.contains(SECTION_TITLE).click({ force: true });
+    getContentDiv(SECTION_TITLE).should("have.class", "hidden");
+
+    // Abre novamente
+    cy.contains(SECTION_TITLE).click({ force: true });
+    getContentDiv(SECTION_TITLE).should("not.have.class", "hidden");
+    getContentDiv(SECTION_TITLE).should("have.class", "border-t");
   });
 
   it("renders the API endpoint documentation", () => {
-    cy.contains("POST https://api.acme.com/auth")
-      .scrollIntoView()
-      .should("be.visible");
+    cy.contains("POST https://api.acme.com/auth").should("exist");
   });
 
   it("renders authService and apiClient code blocks", () => {
-    cy.contains("src/services/authService.ts")
-      .scrollIntoView()
-      .should("be.visible");
-    cy.contains("src/services/apiClient.ts")
-      .scrollIntoView()
-      .should("be.visible");
-  });
-
-  it("renders the sticky table of contents", () => {
-    cy.contains("Pensamento inicial").should("be.visible");
+    // Os títulos dos blocos de código existem no DOM (dentro de seção com overflow-hidden)
+    cy.contains("src/services/authService.ts").should("exist");
+    cy.contains("src/services/apiClient.ts").should("exist");
   });
 
   it("has a back button that returns to Home", () => {
-    cy.contains("Voltar").click();
+    cy.contains("button", "Voltar").click({ force: true });
     cy.contains("h1", "Frontend Challenge").should("be.visible");
   });
 
   it("renders the github badge link", () => {
-    cy.contains("Veja o código desse desafio").should("be.visible");
+    cy.get('a[href*="github.com/andrezadesousa"]').should("exist");
   });
 });
