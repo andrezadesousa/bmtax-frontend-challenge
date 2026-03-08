@@ -118,26 +118,26 @@ export function Readme() {
           </h1>
 
           <p className="text-sm md:text-base text-primary-medium leading-relaxed mb-6">
-            Projeto desenvolvido como resposta ao desafio tecnico da{" "}
-            <strong className="text-text-dark">BMTax</strong>. A aplicacao
+            Projeto desenvolvido como resposta ao desafio técnico da{" "}
+            <strong className="text-text-dark">BMTax</strong>. A aplicação
             apresenta{" "}
             <strong className="text-text-dark">
               quatro desafios de engenharia frontend
             </strong>
-            , cada um documentado em sua propria pagina com explicacoes, codigo
-            e analise da solucao proposta.
+            , cada um documentado em sua própria página com explicações, código
+            e análise da solução proposta.
           </p>
 
           <p className="text-sm md:text-base text-primary-medium leading-relaxed mb-4">
-            O objetivo foi demonstrar nao apenas a implementacao das
-            funcionalidades solicitadas, mas tambem:
+            O objetivo foi demonstrar não apenas a implementação das
+            funcionalidades solicitadas, mas também:
           </p>
           <SimpleList items={projectObjectives} />
 
           {/* Demo */}
           <SectionHeading>Demo</SectionHeading>
           <p className="text-sm text-primary-medium mb-4">
-            A aplicacao pode ser acessada online:
+            A aplicação pode ser acessada online:
           </p>
           <a
             href="https://bmtax-front-end-challenge.web.app/"
@@ -159,7 +159,7 @@ export function Readme() {
                     Tecnologia
                   </th>
                   <th className="text-left px-4 py-2 font-medium text-text-dark border-b border-primary-light/20">
-                    Versao
+                    Versão
                   </th>
                 </tr>
               </thead>
