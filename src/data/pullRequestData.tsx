@@ -10,6 +10,11 @@ import {
   Smile,
 } from "lucide-react";
 
+export type ChangedFile = {
+  name: string;
+  commits: string[];
+};
+
 export type Commit = {
   hash: string;
   message: string;
@@ -435,6 +440,31 @@ export const commits: Commit[] = [
     category: "chore",
   },
 ];
+
+export const getChangedFiles = (commits: Commit[]): ChangedFile[] => {
+  const filesMap = new Map<string, ChangedFile>();
+
+  commits.forEach((commit) => {
+    const match = commit.message.match(/\((.*?)\)/);
+
+    if (!match) return;
+
+    const fileName = match[1];
+
+    if (!filesMap.has(fileName)) {
+      filesMap.set(fileName, {
+        name: fileName,
+        commits: [],
+      });
+    }
+
+    filesMap.get(fileName)?.commits.push(commit.hash);
+  });
+
+  return Array.from(filesMap.values());
+};
+
+export const changedFiles = getChangedFiles(commits);
 
 export const getCategoryIcon = (category: Commit["category"]) => {
   switch (category) {
