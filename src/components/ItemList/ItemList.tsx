@@ -1,30 +1,41 @@
 import type { Item } from "../../types/item";
+import { EmptyState } from "../EmptyState/EmptyState";
 
 type ItemListProps = {
   items: Item[];
+  onSelect: (item: Item) => void;
+  searchTerm: string;
+  onClear: () => void;
 };
 
-export function ItemList({ items }: ItemListProps) {
-  /**
-   * Eu adicionei esse tratamento de estado vazio para não deixar o usuário no vácuo
-   * Se não encontrar o que está procurando, eu posso garantir que a interface dê um feedback claro
-   */
+export function ItemList({
+  items,
+  onSelect,
+  searchTerm,
+  onClear,
+}: ItemListProps) {
   if (items.length === 0) {
-    return (
-      <p className="text-sm text-primary-medium mt-4">
-        Nenhum item encontrado.
-      </p>
-    );
+    /**
+     * Eu adicionei esse tratamento de estado vazio para não deixar o usuário no vácuo
+     * Se não encontrar o que está procurando, eu posso garantir que a interface dê um feedback claro
+     */
+    return <EmptyState searchTerm={searchTerm} onClear={onClear} />;
   }
 
   return (
-    <ul className="mt-4 space-y-2">
+    <ul className="mt-4 space-y-3">
       {items.map((item) => (
         <li
           key={item.id}
-          className="rounded-lg border border-primary-light/20 bg-surface-light p-3 text-text-dark transition-colors hover:border-primary-light/40 hover:bg-surface-light/80"
+          onClick={() => onSelect(item)}
+          className="group cursor-pointer rounded-xl border border-primary-light/10 bg-white p-4 
+                     transition-all hover:border-primary-light/40 hover:shadow-md hover:shadow-primary-light/5
+                     flex justify-between items-center"
         >
-          {item.name}
+          <span className="font-medium text-text-dark">{item.name}</span>
+          <span className="text-xxs font-bold uppercase tracking-widest text-primary-light/40 group-hover:text-primary-light transition-colors">
+            Ver detalhes →
+          </span>
         </li>
       ))}
     </ul>
