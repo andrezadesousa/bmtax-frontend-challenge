@@ -44,7 +44,7 @@ A aplicação pode ser acessada online:
 Sistema de busca em tempo real com foco em performance.
 
 - Filtro **case-insensitive**.
-- Otimização com `useMemo` para evitar re-renderizações desnecessárias.
+- Otimização com `useMemo` para evitar recálculos desnecessários do filtro a cada renderização.
 
 ### 2. Code Review
 
@@ -83,14 +83,13 @@ src/
 └── App.tsx        # Orquestração de navegação
 ```
 
-🧪 Testes E2E (Cypress)
+## 🧪 Testes E2E (Cypress)
+
 Foram implementados testes para garantir a integridade dos fluxos principais:
 
-Navegação entre desafios via Sidebar.
-
-Funcionamento do filtro de busca.
-
-Responsividade e renderização de componentes críticos.
+- Navegação entre desafios via Sidebar.
+- Funcionamento do filtro de busca.
+- Responsividade e renderização de componentes críticos.
 
 Para rodar os testes:
 
@@ -102,7 +101,7 @@ npx cypress run
 npx cypress open
 ```
 
-🚀 Como Rodar o Projeto
+## 🚀 Como Rodar o Projeto
 
 1. Clonar e Instalar:
 
@@ -123,25 +122,21 @@ npm run dev
 npm run build
 ```
 
-🌟 Boas Práticas Aplicadas
+## 🌟 Boas Práticas Aplicadas
 
-[x] Strong Typing: TypeScript em 100% do código.
-
-[x] Performance: Memoization em cálculos custosos.
-
-[x] Clean Code: Nomenclatura semântica e funções puras.
-
-[x] Segurança: Secrets protegidos por variáveis de ambiente.
+- [x] Strong Typing: TypeScript em 100% do código.
+- [x] Performance: Memoização em cálculos custosos.
+- [x] Clean Code: Nomenclatura semântica e funções puras.
+- [x] Segurança: Secrets protegidos por variáveis de ambiente.
 
 ---
 
 ## 📖 Aprendizados Principais
 
-> "Neste projeto, meu maior desafio foi gerenciar a concorrência de requests no Desafio 4. Aprendi a utilizar promessas como cache para evitar Race Conditions no servidor — armazenando a `Promise` em andamento em vez de apenas o resultado — algo que não conhecia anteriormente e que mudou minha forma de pensar sobre autenticação assíncrona."
+> "Neste projeto, meu maior desafio foi o Desafio 4, lembrei da pergunta do Lucas na entrevista! Mas gostei, pois aprendi a usar promises como cache para evitar Race Conditions no servidor, armazenando a `Promise` em andamento em vez de apenas o resultado, algo que já conhecia por projetos anteriormente, mas que com estudos mais afundo, mudou minha forma de pensar sobre autenticação assíncrona."
 
-Outros aprendizados relevantes ao longo do projeto:
+Outros aprendizados que curti ao longo do projeto:
 
-- **`useMemo` na prática:** Entender quando e por que memoizar fez diferença real de performance no Desafio 1, não apenas como conceito teórico.
-- **Code Review com empatia:** O Desafio 2 me ensinou a revisar código pensando em quem escreveu — identificar problemas sem julgamento e propor refatorações claras é uma habilidade tanto técnica quanto humana.
+- **Code Review com empatia:** Outro aprendizado que curti bastante foi o Desafio 2, onde tive que analisar uma PR com más práticas, e isso me fez refletir sobre a importância de manter o código limpo e aderente às melhores práticas, mesmo em projetos pequenos.:
 - **Debugging sistemático:** O Desafio 3 reforçou que um `TypeError` em produção exige leitura de stack trace linha a linha, não apenas tentativa e erro. Optional chaining (`?.`) virou parte permanente do meu toolkit.
 - **Documentar o raciocínio importa:** Escrever o _porquê_ de cada decisão técnica me ajudou a consolidar o aprendizado e comunicar melhor minhas escolhas.
