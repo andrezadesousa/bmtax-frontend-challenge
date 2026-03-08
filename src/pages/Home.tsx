@@ -82,10 +82,9 @@ export function Home({ onNavigate }: HomeProps) {
 
         <p className="text-sm md:text-base text-primary-medium max-w-3xl leading-relaxed">
           Olá! Eu sou a <strong className="text-text-dark">Andreza</strong>,
-          desenvolvedora front-end júnior. Este projeto apresenta minhas
-          respostas aos 4 desafios propostos no processo seletivo, cada um
-          documentado em sua própria página com código, explicações e minha
-          linha de raciocínio.
+          desenvolvedora front-end. Este projeto apresenta minhas respostas aos
+          4 desafios propostos no processo seletivo, cada um documentado em sua
+          própria página com código, explicações e minha linha de raciocínio.
         </p>
       </header>
 
