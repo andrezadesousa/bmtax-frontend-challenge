@@ -5,6 +5,7 @@ import {
   Home,
   X,
   GitPullRequest,
+  BookOpen,
 } from "lucide-react";
 import { WeatherWidget } from "../WeatherWidget/WeatherWidget";
 
@@ -102,7 +103,12 @@ export function Sidebar({
 
             {/* Challenges */}
             {challenges.map((challenge) => {
-              const Icon = challenge.id === 1 ? GitPullRequest : FileCode;
+              const Icon =
+                challenge.id === 1
+                  ? GitPullRequest
+                  : challenge.id === 6
+                    ? BookOpen
+                    : FileCode;
               return (
                 <li key={challenge.id}>
                   <button
