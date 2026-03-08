@@ -3,7 +3,9 @@ import { items } from "../data/items";
 import { ItemList } from "../components/ItemList/ItemList";
 import { SearchInput } from "../components/SearchInput/SearchInput";
 import { PageHeader } from "../components/PageHeader/PageHeader";
-import { Filter } from "lucide-react";
+import { Filter, Info } from "lucide-react";
+import { ItemDrawer } from "../components/ItemDrawer/ItemDrawer";
+import type { Item } from "../types/item";
 
 const GITHUB_URL =
   "https://github.com/andrezadesousa/bmtax-frontend-challenge/blob/main/src/pages/Challenge1.tsx";
@@ -15,12 +17,12 @@ export function Challenge1({ onBack }: { onBack?: () => void }) {
    * Decidi usar o useMemo para evitar que o filtro seja recalculado em renderizações desnecessárias.
    * Assim, posso garantir que a lógica só será disparada quando o valor de search realmente mudar.
    */
+  const [selectedItem, setSelectedItem] = useState<Item | null>(null);
+
   const filteredItems = useMemo(() => {
     const normalizedSearch = search.toLowerCase().trim();
 
-    if (!normalizedSearch) {
-      return items;
-    }
+    if (!normalizedSearch) return items;
 
     return items.filter((item) =>
       item.name.toLowerCase().includes(normalizedSearch),
@@ -48,14 +50,38 @@ export function Challenge1({ onBack }: { onBack?: () => void }) {
           </>
         }
       />
+      <section className="mt-8 mb-6 p-5 md:p-6 rounded-2xl border border-primary-light/10 bg-surface-light/30 flex flex-col md:flex-row md:items-end justify-between gap-6">
+        <div className="w-full md:max-w-md lg:max-w-lg">
+          <label className="block text-sm font-semibold text-primary-dark mb-2 ml-1">
+            Buscar na lista
+          </label>
+          <SearchInput
+            value={search}
+            onChange={setSearch}
+            placeholder="Digite para filtrar os itens..."
+          />
+        </div>
 
-      <SearchInput
-        value={search}
-        onChange={setSearch}
-        placeholder="Digite para filtrar os itens..."
+        <div className="flex items-start gap-3 text-primary-medium/70 bg-white/50 p-3 rounded-xl border border-primary-light/5 max-w-xs">
+          <Info size={18} className="shrink-0 mt-0.5 text-primary-light" />
+          <p className="text-xs italic leading-relaxed">
+            <strong className="not-italic block mb-0.5 text-primary-dark">
+              Dica:
+            </strong>
+            Clique em qualquer item para abrir o painel de informações
+            detalhadas.
+          </p>
+        </div>
+      </section>
+
+      <ItemList
+        items={filteredItems}
+        onSelect={setSelectedItem}
+        searchTerm={search}
+        onClear={() => setSearch("")}
       />
 
-      <ItemList items={filteredItems} />
+      <ItemDrawer item={selectedItem} onClose={() => setSelectedItem(null)} />
     </div>
   );
 }
