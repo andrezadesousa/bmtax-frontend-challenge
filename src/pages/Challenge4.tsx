@@ -184,8 +184,7 @@ export function Challenge4({ onBack }: { onBack?: () => void }) {
         icon={<Shield size={16} className="text-primary-light shrink-0" />}
       >
         <p className="text-xs md:text-sm">
-          Com base na documentação, pensei nesse fluxo para consumir a API,
-          seguindo esses passos:
+          Com base na documentação, pensei nesse fluxo para consumir a API:
         </p>
         <FlowDiagram />
       </CollapsibleSection>
@@ -212,11 +211,11 @@ export function Challenge4({ onBack }: { onBack?: () => void }) {
 
         <ul className="list-disc ml-4 md:ml-6 text-xs md:text-sm space-y-1">
           <li>
-            <strong>authService</strong> — responsável por autenticação e
+            <strong>authService</strong> - responsável por autenticação e
             geração do token JWT.
           </li>
           <li>
-            <strong>apiClient</strong> — responsável por centralizar chamadas
+            <strong>apiClient</strong> - responsável por centralizar chamadas
             HTTP autenticadas.
           </li>
         </ul>
@@ -233,14 +232,14 @@ export function Challenge4({ onBack }: { onBack?: () => void }) {
         >
           <p className="leading-relaxed">
             Como a aplicação roda no servidor (Next.js Server Component ou Route
-            Handler), o{" "}
+            Handler), eu garanto que o{" "}
             <code className="bg-surface-white px-1 rounded">process.env</code>{" "}
-            nunca é enviado ao browser — as credenciais ficam protegidas no
-            processo Node.js. O cache em memória do módulo (
+            nunca seja enviado ao browser, mantenho as credenciais protegidas no
+            processo Node.js. Utilizo o cache em memória do módulo (
             <code className="bg-surface-white px-1 rounded">cachedToken</code>)
-            também persiste enquanto o servidor estiver rodando, o que significa
-            que todos os usuários compartilham o mesmo token válido sem precisar
-            gerar um novo a cada requisição.
+            para que ele persista enquanto o servidor estiver rodando, o que me
+            permite compartilhar o mesmo token válido entre todos os usuários,
+            sem que eu precise gerar um novo a cada requisição.
           </p>
         </InfoCard>
 
