@@ -7,6 +7,7 @@ import { Challenge2 } from "./pages/Challenge2";
 import { Challenge3 } from "./pages/Challenge3";
 import { Challenge4 } from "./pages/Challenge4";
 import { PullRequest } from "./pages/PullRequest";
+import { Readme } from "./pages/Readme";
 
 const challenges = [
   { id: 1, title: "Pull Request " },
@@ -14,6 +15,7 @@ const challenges = [
   { id: 3, title: "Desafio 2 - Code Review" },
   { id: 4, title: "Desafio 3 - Debug de erro" },
   { id: 5, title: "Desafio 4 - OAuth JWT" },
+  { id: 6, title: "README.md" },
 ];
 
 function App() {
@@ -42,6 +44,8 @@ function App() {
         return <Challenge3 onBack={() => setActiveChallenge(0)} />;
       case 5:
         return <Challenge4 onBack={() => setActiveChallenge(0)} />;
+      case 6:
+        return <Readme />;
       default:
         return <Home onNavigate={setActiveChallenge} />;
     }
