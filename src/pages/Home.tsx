@@ -24,7 +24,7 @@ const technologies = [
 
 const challenges = [
   {
-    id: 1,
+    id: 2,
     title: "Desafio 1",
     subtitle: "Filtro de Itens",
     description:
@@ -33,7 +33,7 @@ const challenges = [
     color: "bg-primary-light",
   },
   {
-    id: 2,
+    id: 3,
     title: "Desafio 2",
     subtitle: "Code Review",
     description:
@@ -42,7 +42,7 @@ const challenges = [
     color: "bg-diff-add-border",
   },
   {
-    id: 3,
+    id: 4,
     title: "Desafio 3",
     subtitle: "Debug de Erro",
     description:
@@ -51,7 +51,7 @@ const challenges = [
     color: "bg-diff-remove-border",
   },
   {
-    id: 4,
+    id: 5,
     title: "Desafio 4",
     subtitle: "OAuth JWT",
     description:
