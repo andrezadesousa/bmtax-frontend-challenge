@@ -42,9 +42,8 @@ export const futureImprovements: string[] = [
 ];
 
 export const learnings: string[] = [
-  "Neste projeto, meu maior desafio foi gerenciar a concorrência de requests no Desafio 4. Aprendi a utilizar promessas como cache para evitar Race Conditions no servidor — armazenando a Promise em andamento em vez de apenas o resultado — algo que não conhecia anteriormente e que mudou minha forma de pensar sobre autenticação assíncrona.",
-  "useMemo na prática: entender quando e por que memoizar fez diferença real de performance no Desafio 1, não apenas como conceito teórico.",
-  "Code Review com empatia: o Desafio 2 me ensinou a revisar código pensando em quem escreveu — identificar problemas sem julgamento e propor refatorações claras.",
+  "Neste projeto, meu maior desafio foi o Desafio 4, lembrei da pergunta do Lucas na entrevista! Mas gostei, pois aprendi a usar promises como cache para evitar Race Conditions no servidor, armazenando a `Promise` em andamento em vez de apenas o resultado, algo que já conhecia por projetos anteriormente, mas que com estudos mais afundo, mudou minha forma de pensar sobre autenticação assíncrona.",
+  "Code Review com empatia:Outro aprendizado que curti bastante foi o Desafio 2, onde tive que analisar uma PR com más práticas, e isso me fez refletir sobre a importância de manter o código limpo e aderente às melhores práticas, mesmo em projetos pequenos.",
   "Debugging sistemático: o Desafio 3 reforçou que um TypeError em produção exige leitura de stack trace linha a linha. Optional chaining (?.) virou parte permanente do meu toolkit.",
   "Documentar o raciocínio importa: escrever o porquê de cada decisão técnica me ajudou a consolidar o aprendizado e comunicar melhor minhas escolhas.",
 ];
