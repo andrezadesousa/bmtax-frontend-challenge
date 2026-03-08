@@ -137,6 +137,6 @@ npm run build
 
 Outros aprendizados que curti ao longo do projeto:
 
-- **Code Review com empatia:** Outro aprendizado que curti bastante foi o Desafio 2, onde tive que analisar uma PR com más práticas, e isso me fez refletir sobre a importância de manter o código limpo e aderente às melhores práticas, mesmo em projetos pequenos.:
+- **Code Review com empatia:** Outro aprendizado que curti bastante foi o Desafio 2, onde tive que analisar uma PR com más práticas, e isso me fez refletir sobre a importância de manter o código limpo e aderente às melhores práticas, mesmo em projetos pequenos.
 - **Debugging sistemático:** O Desafio 3 reforçou que um `TypeError` em produção exige leitura de stack trace linha a linha, não apenas tentativa e erro. Optional chaining (`?.`) virou parte permanente do meu toolkit.
 - **Documentar o raciocínio importa:** Escrever o _porquê_ de cada decisão técnica me ajudou a consolidar o aprendizado e comunicar melhor minhas escolhas.
