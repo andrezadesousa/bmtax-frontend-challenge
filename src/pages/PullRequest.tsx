@@ -15,6 +15,7 @@ import {
   getCategoryIcon,
   getCategoryColor,
   prDescription,
+  changedFiles,
 } from "../data/pullRequestData";
 import { ConversationCard } from "../components/ConversationCard/ConversationCard";
 
@@ -244,11 +245,24 @@ export function PullRequest() {
 
           {/* Files changed Tab */}
           {activeTab === "Files changed" && (
-            <div className="border border-primary-light/20 rounded-lg p-8 flex flex-col items-center justify-center gap-3 text-primary-medium">
-              <FileCode size={40} className="opacity-40" />
-              <p className="text-sm">
-                Files changed view not available in preview.
-              </p>
+            <div className="border border-primary-light/20 rounded-lg divide-y divide-primary-light/20">
+              {changedFiles.map((file) => (
+                <div
+                  key={file.name}
+                  className="flex items-center justify-between px-6 py-4 hover:bg-surface-light/40"
+                >
+                  <div className="flex items-center gap-3">
+                    <FileCode size={16} className="text-primary-light" />
+                    <span className="text-sm font-mono text-text-dark">
+                      {file.name}
+                    </span>
+                  </div>
+
+                  <span className="text-xs text-primary-medium">
+                    {file.commits.length} commit{file.commits.length > 1 && "s"}
+                  </span>
+                </div>
+              ))}
             </div>
           )}
         </div>
