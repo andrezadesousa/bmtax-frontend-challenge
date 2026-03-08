@@ -34,8 +34,7 @@ export function Challenge1({ onBack }: { onBack?: () => void }) {
         githubUrl={GITHUB_URL}
         title="Desafio 1 — Filtro de Itens"
         description="Oie, pessoa! Nesta página, eu criei um sistema de busca que filtra os
-        itens em tempo real. Enquanto você digita no campo de pesquisa, eu
-        atualizo a lista dinamicamente para exibir apenas o que você procura.
+        itens em tempo real. Enquanto você digita no campo de pesquisa, a lista atualiza dinamicamente para exibir apenas o que você procura.
         Além disso, configurei o filtro para ignorar letras maiúsculas ou
         minúsculas, facilitando a sua busca, chique!"
         badges={
