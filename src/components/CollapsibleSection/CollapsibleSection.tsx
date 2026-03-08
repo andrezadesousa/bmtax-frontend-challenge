@@ -40,11 +40,15 @@ export function CollapsibleSection({
         )}
       </button>
 
-      {open && (
-        <div className="p-3 md:p-5 space-y-3 md:space-y-4 border-t border-primary-light/20">
-          {children}
-        </div>
-      )}
+      <div
+        className={
+          open
+            ? "p-3 md:p-5 space-y-3 md:space-y-4 border-t border-primary-light/20"
+            : "hidden"
+        }
+      >
+        {children}
+      </div>
     </section>
   );
 }
